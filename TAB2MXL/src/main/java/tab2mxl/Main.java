@@ -6,7 +6,8 @@ public class Main {
 		System.out.println("Hello world!");
 		System.out.println("Hello world From Muhammad Azizi!");
 
-		System.out.println("This is a push - Andrew")
+		System.out.println("This is a push - Andrew");
+		System.out.println("this is whatever -alp");
 	}
 
 }

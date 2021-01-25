@@ -17,12 +17,12 @@ func main() {
 	}*/
 
 	//Reads file line-by-line
-	i := 1
-	var noteList [6]string //String arraylist of size 6
-	scanner := bufio.NewScanner(os.Stdin) 
-	for scanner.Scan() { //ERROR: error will probably occur if more than 6 lines are inputed - to fix
-		noteList[i] = scanner.Text()
-		i = i + 1
+	noteList := make([]string) //Create a slice(Similar to dynamic array)
+	scanner := bufio.NewScanner(os.Stdin) //Scanner
+	
+	//Scans through lines inputted by user and stores them in a slice
+	for scanner.Scan() {
+		noteList = append(noteList, scanner.Text()) //Append scanned text to slice
 		//fmt.Println(scanner.Text())
 	}
 	if err := scanner.Err(); err != nil {

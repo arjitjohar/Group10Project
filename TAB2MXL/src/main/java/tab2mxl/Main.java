@@ -20,6 +20,7 @@ public class Main {
 		System.out.println("Lab1 Task - AS");
 		System.out.println("Lab1 Task - Daniel Santorelli");
 		System.out.println("big poop and pee");
+		System.out.println("LAB2 PRACTICE DONE");
 	}
 
 }

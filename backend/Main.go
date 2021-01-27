@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"strings"
-	"text/scanner"
 	"bufio"
+	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -17,9 +16,9 @@ func main() {
 	}*/
 
 	//Reads file line-by-line
-	noteList := make([]string) //Create a slice(Similar to dynamic array)
+	noteList := make([]string, 0)         //Create a slice(Similar to dynamic array)
 	scanner := bufio.NewScanner(os.Stdin) //Scanner
-	
+
 	//Scans through lines inputted by user and stores them in a slice
 	for scanner.Scan() {
 		noteList = append(noteList, scanner.Text()) //Append scanned text to slice
@@ -27,5 +26,13 @@ func main() {
 	}
 	if err := scanner.Err(); err != nil {
 		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+	}
+
+	//Reads through the slice line-by-line
+	for i := 0; i < len(noteList); i++ {
+		//Checks lines that contains dashes
+		if strings.ContainsAny("-", noteList[i]) {
+			//TODO: implement conversion into sheet music
+		}
 	}
 }

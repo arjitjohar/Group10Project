@@ -19,7 +19,7 @@ public class Main {
 		System.out.println("Lab1 Task - Andrew Ngov");
 		System.out.println("Lab1 Task - AS");
 		System.out.println("Lab1 Task - Daniel Santorelli");
-		System.out.println("double poop");
+		System.out.println("LAB2 PRACTICE DONE");
 	}
 
 }

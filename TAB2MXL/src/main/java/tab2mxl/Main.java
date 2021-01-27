@@ -22,7 +22,7 @@ public class Main {
 		System.out.println("big poop and pee");
 		System.out.println("LAB2 PRACTICE DONE");
 		System.out.println("lab2 but alp");
-		System.out.println("LAB2");
+		System.out.println("LAB2 Andrew N");
 
 
 	}

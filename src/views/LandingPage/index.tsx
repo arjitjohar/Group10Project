@@ -51,8 +51,8 @@ export const Landing = () => {
             </div>
 
             <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
+                Launch demo modal
+            </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

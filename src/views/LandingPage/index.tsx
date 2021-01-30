@@ -1,36 +1,11 @@
-import React, { useState } from 'react';
+
+import React, { useState, Component, FunctionComponent, FC } from 'react';
 //import Modal from 'react-bootstrap/Modal';
-<<<<<<< HEAD
 import { Button, Modal } from 'react-bootstrap'
 
 
-=======
-import { Button, Modal } from 'react-bootstrap';
 
 
-
-
-export const Landing = () => {
-
-    function import_new_music()
-    {
-        return setCount(count+1)
-    }
-
-    function reset(){
-        return setCount(0)
-    }
-<<<<<<< HEAD
->>>>>>> parent of b4e9b2c... updated modal
-=======
->>>>>>> parent of b4e9b2c... updated modal
-
-    function copy_paste(){
-        return setCount(99)
-    }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
 export const Landing = () => {
   const [showModal, setShowModal] = React.useState(false);
 
@@ -77,20 +52,6 @@ export const Landing = () => {
               
               
             }
-=======
-=======
->>>>>>> parent of b4e9b2c... updated modal
-    const [count, setCount] = useState(0);
-
-
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-<<<<<<< HEAD
->>>>>>> parent of b4e9b2c... updated modal
-=======
->>>>>>> parent of b4e9b2c... updated modal
 
     
 
@@ -104,8 +65,6 @@ export const Landing = () => {
 
                 <div className="max-w-md w-full mx-auto">
                     <div className="flex md:space-x-2 justify-center">
-<<<<<<< HEAD
-<<<<<<< HEAD
                         <button className="w-15 hover:bg-green-400 transition duration-100 align-center border border-green-400 bg-green-300 rounded-lg font-medium px-4">import</button>
                         <Button className="w-15 hover:bg-blue-400 transition duration-100 align-center border border-blue-400 bg-blue-300 rounded-lg font-medium px-4" variant="primary" onClick={toggleModal}>paste</Button>                        
                         <button className="w-15 hover:bg-red-400 transition duration-100 align-center border border-red-400 bg-red-300 rounded-lg font-medium px-4">reset</button>
@@ -120,12 +79,6 @@ export const Landing = () => {
                         <div className="mt-2">
                         
                               
-=======
-                        <button onClick={() => import_new_music()} className="w-20 align-center border border-green-400 bg-green-300 rounded-lg">1</button>
-                        <button onClick={() => reset()} className="w-20 align-center border border-blue-400 bg-blue-300 rounded-lg">2</button>
-                        <button onClick={() => copy_paste()} className="w-20 align-center border border-red-400 bg-red-300 rounded-lg">3</button>
-                        <button onClick={handleShow} className="w-20 align-center border border-red-400 bg-red-300 rounded-lg">3</button>
->>>>>>> parent of b4e9b2c... updated modal
                     </div>
                     <div className="mt=3 flex justify-end space-x-3">
                       <button className="w-20 hover:bg-gray-400 transition duration-100 align-center border border-gray-400 bg-gray-300 rounded-lg font-medium">accept</button>
@@ -136,60 +89,19 @@ export const Landing = () => {
                     
 
                         
-=======
-                        <button onClick={() => import_new_music()} className="w-20 align-center border border-green-400 bg-green-300 rounded-lg">1</button>
-                        <button onClick={() => reset()} className="w-20 align-center border border-blue-400 bg-blue-300 rounded-lg">2</button>
-                        <button onClick={() => copy_paste()} className="w-20 align-center border border-red-400 bg-red-300 rounded-lg">3</button>
-                        <button onClick={handleShow} className="w-20 align-center border border-red-400 bg-red-300 rounded-lg">3</button>
->>>>>>> parent of b4e9b2c... updated modal
                     </div>
 
                     
                 </div>
-
-
             </div>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 
             
             
         </div>
         
-=======
-=======
->>>>>>> parent of b4e9b2c... updated modal
-            <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-<<<<<<< HEAD
->>>>>>> parent of b4e9b2c... updated modal
-
-
-
-=======
-
-
-
->>>>>>> parent of b4e9b2c... updated modal
-        </div>
-        
     )
+    
 }

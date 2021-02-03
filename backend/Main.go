@@ -9,15 +9,15 @@ import (
 	"strings"
 )
 
-//Information for MusicXML file
+//Music information for MusicXML file
 type Music struct {
 	XMLName xml.Name `xml:"score-partwise"`
 	Parts   []Part   `xml:"part"`
 }
 
-//Parts in the music piece
+//Part in the music piece
 type Part struct {
-	Id       string    `xml:"id,attr"`
+	//Id       string    `xml:"id,attr"`
 	Measures []Measure `xml:"measure"`
 }
 
@@ -48,13 +48,13 @@ type Key struct {
 	Mode   string `xml:"mode"`
 }
 
-//Beats in the music piece
+//Time Beat in the music piece
 type Time struct {
 	Beats    int `xml:"beats"`
 	BeatType int `xml:"beat-type"`
 }
 
-//Notes in the music piece
+//Note in the music piece
 type Note struct {
 	Pitch    Pitch    `xml:"pitch"`
 	Duration int      `xml:"duration"`

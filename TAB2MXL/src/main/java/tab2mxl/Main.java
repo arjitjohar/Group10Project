@@ -10,7 +10,11 @@ public class Main {
 
 
 
+		System.out.println("this is alp lab3");
+
+
 		System.out.println("Hey there lab3 muhammad");
+
 
 	}
 

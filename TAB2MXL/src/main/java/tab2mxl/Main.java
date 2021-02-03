@@ -8,19 +8,14 @@ public class Main {
 		System.out.println("Hello world From Daniel Santorelli!");
 		System.out.println("Hello world From Arjit Johar! Howdy");
 
-		System.out.println("This is a push - Andrew");
-		System.out.println("this is whatever -alp");
-		System.out.println("Daniel Santorelli test");
-		
-		
-		System.out.println("Lab Task");
-		System.out.println("Lab Task second attempt -alp");
 
-		System.out.println("Lab1 Task - Andrew Ngov");
-		System.out.println("Lab1 Task - AS");
 
-System.out.println("Lab1 Task - Daniel Santorelli");
 		System.out.println("this is alp lab3");
+
+
+		System.out.println("Hey there lab3 muhammad");
+
+
 	}
 
 }

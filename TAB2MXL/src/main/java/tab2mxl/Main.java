@@ -8,6 +8,6 @@ public class Main {
 		System.out.println("Hello world From Daniel Santorelli!");
 		System.out.println("Hello world From Arjit Johar! Howdy");
 
-		System.out.println("lab3 Daniel Santorelli");
+		System.out.println("lab3 Daniel S");
 	}
 }

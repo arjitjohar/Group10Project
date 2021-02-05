@@ -7,14 +7,15 @@ import (
 
 //Music Information for MusicXML file
 type Music struct {
-	Partwise xml.Name `xml:"score-partwise"`
-	Version  string   `xml:version,attr`
-	Parts    []Part   `xml:"part"`
+	XMLName xml.Name `xml:"score-partwise"`
+	Version string   `xml:"version,attr"`
+	Parts   []Part   `xml:"part"`
 }
 
 //Part in the music piece
 type Part struct {
-	Id       string    `xml:"id,attr"`
+	XMLName  xml.Name  `xml:"part"`
+	ID       string    `xml:"id,attr"`
 	Measures []Measure `xml:"measure"`
 }
 
@@ -79,11 +80,29 @@ type Technical struct {
 }
 
 func main() {
-	music := &Music{
+	/*music := &Music{
 		Version: "3.1",
+		/*Parts: Parts{[]Part{
+		Part{ID: "P1"}}},
+	}*/
+
+	note := &Note{
+		Pitch: Pitch{
+			Step:   "B",
+			Octave: 2,
+		},
+		Duration: 8,
+		Voice:    1,
+		Type:     "Whole",
+		Notations: Notations{
+			Technical: Technical{
+				String: 5,
+				Fret:   2,
+			},
+		},
 	}
 
-	out, err := xml.MarshalIndent(music, "", "   ")
+	out, err := xml.MarshalIndent(note, "", "   ")
 
 	if err != nil {
 		panic(err)

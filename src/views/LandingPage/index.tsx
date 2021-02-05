@@ -5,6 +5,7 @@ import { Button, Modal } from 'react-bootstrap'
 import { render } from 'react-dom';
 import CopyPasteBox from '../../components/CopyPasteBox';
 import Header from '../../components/header';
+import MusicSheetArea from '../../components/MusicSheetArea';
 
 
 
@@ -51,11 +52,12 @@ export const Landing = () => {
   return (
       <div>
         <Header/>
-        <div className="bg-gray-700 flex min-h-screen">
-            <div >
-                <CopyPasteBox/>
-            </div>
+        <div className="bg-gray-700 min-h-screen ">
+          
+          <div className="flex items-center justify-center "> <MusicSheetArea/> <CopyPasteBox />   </div>
+            
         </div>
+        
       </div>
 
 

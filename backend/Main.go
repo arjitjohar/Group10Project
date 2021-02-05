@@ -1,21 +1,18 @@
 package main
 
 import (
-	"bufio"
 	"encoding/xml"
 	"fmt"
-	"os"
-	"regexp"
-	"strings"
 )
 
-//Information for MusicXML file
+//Music Information for MusicXML file
 type Music struct {
-	XMLName xml.Name `xml:"score-partwise"`
-	Parts   []Part   `xml:"part"`
+	Partwise xml.Name `xml:"score-partwise"`
+	Version  string   `xml:version,attr`
+	Parts    []Part   `xml:"part"`
 }
 
-//Parts in the music piece
+//Part in the music piece
 type Part struct {
 	Id       string    `xml:"id,attr"`
 	Measures []Measure `xml:"measure"`
@@ -48,31 +45,53 @@ type Key struct {
 	Mode   string `xml:"mode"`
 }
 
-//Beats in the music piece
+//Time in the attributes
 type Time struct {
 	Beats    int `xml:"beats"`
 	BeatType int `xml:"beat-type"`
 }
 
-//Notes in the music piece
+//Note in the measure
 type Note struct {
-	Pitch    Pitch    `xml:"pitch"`
-	Duration int      `xml:"duration"`
-	Voice    int      `xml:"voice"`
-	Type     string   `xml:"type"`
-	Rest     xml.Name `xml:"rest"`
-	Chord    xml.Name `xml:"chord"`
+	Pitch     Pitch     `xml:"pitch"`
+	Duration  int       `xml:"duration"`
+	Voice     int       `xml:"voice"`
+	Type      string    `xml:"type"`
+	Notations Notations `xml:"notations"`
 }
 
-//Pitch of the music piece
+//Pitch of Notes
 type Pitch struct {
-	Accidental int8   `xml:"alter"`
-	Step       string `xml:"step"`
-	Octave     int    `xml:"octave"`
+	Step   string `xml:"step"`
+	Alter  int    `xml:"alter"`
+	Octave int    `xml:"octave"`
+}
+
+//Notations of Note
+type Notations struct {
+	Technical Technical `xml:"technical"`
+}
+
+//Technical of notation
+type Technical struct {
+	String int `xml:"string"`
+	Fret   int `xml:"fret"`
 }
 
 func main() {
-	//Reads file line-by-line
+	music := &Music{
+		Version: "3.1",
+	}
+
+	out, err := xml.MarshalIndent(music, "", "   ")
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(string(out))
+
+	/*//Reads file line-by-line
 	noteList := make([]string, 0)         //Create a slice(Similar to dynamic array)
 	noteNotation := make([]string, 0)     //Stores the note notations on standard staff
 	noteNum := make([]int, 0)             //Stores the amount of notes per line
@@ -102,5 +121,5 @@ func main() {
 			}
 		}
 	}
-
+	*/
 }

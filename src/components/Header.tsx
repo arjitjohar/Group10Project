@@ -20,7 +20,7 @@ export default class Header extends React.Component {
                                 Whatever poop
                             </a>
                             
-                            <a  className="hidden md:flex items-center justify-end md:flex-1 lg:w-0 text-base font-medium text-gray-500 hover:text-gray-900">
+                            <a href="https://github.com/arjitjohar/Group10Project" className="hidden md:flex items-center justify-end md:flex-1 lg:w-0 text-base font-medium text-gray-500 hover:text-gray-900">
                                 github logo
                             </a>
                             

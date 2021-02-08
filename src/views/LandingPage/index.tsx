@@ -1,6 +1,7 @@
 
 import * as React from 'react'
 import FileUploadBox from '../../components/FileUploadBox';
+import CopyPasteBox from '../../components/CopyPasteBox';
 //import Modal from 'react-bootstrap/Modal';
 import Header from '../../components/header';
 
@@ -33,8 +34,21 @@ export const Landing = () => {
 
         
         <div className="min-h-screen bg-gray-600"> 
+
           <Header/>
-          <div className="mt-6 flex justify-center"> <FileUploadBox/>   </div>
+         
+         
+          <div className="mt-6 flex justify-center"> 
+            <FileUploadBox/>   
+          </div>
+
+          <div className="mt-6 flex justify-center"> 
+              <CopyPasteBox/>
+          </div>
+         
+
+
+         
           
           
           

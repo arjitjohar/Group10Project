@@ -1,4 +1,5 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
+import { useEffect } from 'react';
 import {useDropzone} from 'react-dropzone';
 
 const baseStyle = {
@@ -22,24 +23,56 @@ const activeStyle = {
 };
 
 const acceptStyle = {
-  borderColor: '#00e676'
+  borderColor: '#00cc69'
 };
 
 const rejectStyle = {
   borderColor: '#ff1744'
 };
+
+
+
+
+
 interface TextUpload {
   files: File[],
   onDrop: (acceptedFiles: File[]) => void
   }
 const FileUploadBox:React.FC<TextUpload> = ({files, onDrop}) => {
+  const [file, setFiles] = useState<File[]>([]);
   const {
     getRootProps,
     getInputProps,
     isDragActive,
     isDragAccept,
-    isDragReject
-  } = useDropzone({accept: 'txt/*', onDrop: onDrop});
+    isDragReject,
+    acceptedFiles,
+    fileRejections,
+  } = useDropzone({
+    accept: 'text/.txt/*',
+    onDrop: acceptedFiles => {
+      setFiles(acceptedFiles.map(file => Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      })));
+    }
+  });
+
+  const acceptedFileItems = acceptedFiles.map(file => (
+    <li key={file.path}>
+      {file.path} - {file.size} bytes
+    </li>
+  ));
+  
+  const fileRejectionItems = fileRejections.map(({ file, errors }) => (
+    <li key={file.path}>
+      {file.path} - {file.size} bytes
+      <ul>
+        {errors.map(e => (
+          <li key={e.code}>{e.message}</li>
+        ))}
+      </ul>
+    </li>
+  ));
 
   const style:any = useMemo(() => ({
     ...baseStyle,
@@ -52,13 +85,24 @@ const FileUploadBox:React.FC<TextUpload> = ({files, onDrop}) => {
     isDragAccept
   ]);
 
+
   return (
     <div className="container">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
-      </div>
+        
+      </div> 
+      <ul className="list-group mt-2">
+  {acceptedFiles.length > 0 && acceptedFiles.map(acceptedFile => (
+    <li className="list-group-item list-group-item-success">
+      {acceptedFile.name}
+    </li>
+  ))}
+</ul>
+
     </div>
+    
   );
 }
 

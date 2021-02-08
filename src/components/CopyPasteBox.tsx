@@ -6,7 +6,7 @@ export default class CopyPasteBox extends React.Component {
   render(){
     return (
       <div>
-        <textarea cols={100} rows={10}></textarea>
+        <textarea cols={130} rows={15}></textarea>
               
       </div>
     );

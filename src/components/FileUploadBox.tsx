@@ -38,6 +38,9 @@ interface TextUpload {
   files: File[],
   onDrop: (acceptedFiles: File[]) => void
   }
+
+
+
 const FileUploadBox:React.FC<TextUpload> = ({files, onDrop}) => {
   const [file, setFiles] = useState<File[]>([]);
   const {
@@ -85,6 +88,8 @@ const FileUploadBox:React.FC<TextUpload> = ({files, onDrop}) => {
     isDragAccept
   ]);
 
+  
+
 
   return (
     <div className="container">
@@ -97,9 +102,12 @@ const FileUploadBox:React.FC<TextUpload> = ({files, onDrop}) => {
   {acceptedFiles.length > 0 && acceptedFiles.map(acceptedFile => (
     <li className="list-group-item list-group-item-success">
       {acceptedFile.name}
+      
+      
     </li>
   ))}
 </ul>
+
 
     </div>
     

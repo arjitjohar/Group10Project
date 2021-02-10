@@ -10,10 +10,6 @@ export default class CopyPasteBox extends React.Component {
   render(){
     return (
       <div>
-
-
-
-
         {/* <form onSubmit={this.handleSubmit}>
         <label>
           Essay:
@@ -34,14 +30,7 @@ export default class CopyPasteBox extends React.Component {
             />
             {/* <Button >Create Task</Button> */}
           </Form>
-
-
-
-
-              
       </div>
     );
   }
-    
-  
 }

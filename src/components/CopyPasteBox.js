@@ -24,41 +24,54 @@ export default class CopyPasteBox extends React.Component {
       <>
       <div>
 
-
-
-
-
-        {/* <form onSubmit={this.handleSubmit}>
+      {/*<form onSubmit={this.handleSubmit}>
         <label>
           Essay:
           <textarea value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
-      </form> */}
-
+    </form> */}
+      {/*
           <Form //onSubmit={this.onSubmit}
           >
+            
             <Input
               type="text"
               name="task"
+              width="50"
+              height="50"
               //onChange={this.onChange}
               //value={this.state.task}
               fluid
               placeholder="Create Task"
             />
-            {/* <Button >Create Task</Button> */}
-          </Form>
-
-
-
-
+            { <Button >Create Task</Button> 
+            </Form>*/}
+          
+          
+    
               
       </div>
+      
+
+      <div>
+        <textarea cols="70" rows="25" placeholder="this text will show in the textarea">
+
+
+
+        </textarea>
+      </div>
+
+
+
+
       <div>
           <button onClick={this.onClickButton1} class="m-4">
             convert
           </button>
       </div>
+
+
       <div>
         <h1>
         {this.state.text}

@@ -16,6 +16,10 @@ public class Main {
 		System.out.println("Hey there lab3 muhammad");
 
 
+		System.out.println("Hey there lab3 muhammad");
+		hello heyyyyy
+		System.out.println("bruh");
+		System.out.println("HELLO - ANDREW");
 	}
 
 }

@@ -136,6 +136,13 @@ type Technical struct {
 
 func main() {
 
+	//x:= 1
+	y := 2
+	b := [5]int{1, 2, 3, 4, 5}
+	for i := 0; i < 5; i++ {
+
+	
+	
 	note := &Note{
 		Pitch: Pitch{
 			Step:   "B",
@@ -146,8 +153,8 @@ func main() {
 		Type:     "Whole",
 		Notations: Notations{
 			Technical: Technical{
-				String: 5,
-				Fret:   2,
+				String: b[3],
+				Fret:   y,
 			},
 		},
 	}
@@ -159,4 +166,5 @@ func main() {
 	}
 
 	fmt.Println(string(out))
+}	
 }

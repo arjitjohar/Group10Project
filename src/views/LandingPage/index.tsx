@@ -1,13 +1,3 @@
-<<<<<<< Updated upstream
-import React from 'react';
-
-
-export const Landing = () => {
-    return (
-        <div className="text-blue-500 text-6xl font-mono">Landing</div>
-    )
-}
-=======
 
 import React, { useState, Component, FunctionComponent, FC } from 'react';
 //import Modal from 'react-bootstrap/Modal';
@@ -85,4 +75,3 @@ export const Landing = () => {
       </div>
       )
   }
->>>>>>> Stashed changes

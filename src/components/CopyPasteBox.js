@@ -1,15 +1,29 @@
 import * as React from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Card, Header, Form, Input, Icon } from "semantic-ui-react";
+//import textshown from './textToBeShown.txt'
 
 
 function getFileData(fileUploaded) {
   return fileUploaded.data;
 }
 export default class CopyPasteBox extends React.Component {
+
+  state = {
+    text: 'output goes here'
+  }
+
+  onClickButton1 = () => {
+    this.setState({
+      text: "Output MusicXML"
+    });
+  }
+  
   render(){
     return (
+      <>
       <div>
+
 
 
 
@@ -40,6 +54,17 @@ export default class CopyPasteBox extends React.Component {
 
               
       </div>
+      <div>
+          <button onClick={this.onClickButton1} class="m-4">
+            convert
+          </button>
+      </div>
+      <div>
+        <h1>
+        {this.state.text}
+        </h1>
+      </div>
+      </>
     );
   }
     

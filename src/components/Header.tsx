@@ -28,6 +28,14 @@ export default class Header extends React.Component {
                                 
                                 About
                             </a>
+                            
+                            <button className="border border-gray-900 bg-gray-700 text-white rounded-md px-4 py-2 m-2 hover:bg-gray-800 transition duration-500 ease">
+                                Log In
+                            </button>
+
+                            <button  className="border border-gray-900 bg-gray-700 text-white rounded-md px-4 py-2 m-2 hover:bg-gray-800 transition duration-500 ease">
+                                Sign Up
+                            </button>
 
                             <a className="hidden md:flex items-center justify-end md:flex-1 lg:w-0" href="https://github.com/arjitjohar/Group10Project">
                                 <img src={logo}  alt="GitHub">

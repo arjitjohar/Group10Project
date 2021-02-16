@@ -21,6 +21,7 @@ class Uploads extends Component {
 
     return (<div>
       <input type="file" onChange={(e) => this.showFile(e)} />
+      <p> </p>
     </div>
     )
   }

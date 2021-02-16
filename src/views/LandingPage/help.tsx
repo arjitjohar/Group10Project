@@ -1,0 +1,78 @@
+
+import * as React from 'react'
+import FileUploadBox from '../../components/FileUploadBox';
+import CopyPasteBox from '../../components/CopyPasteBox';
+//import Modal from 'react-bootstrap/Modal';
+import Header from '../../components/header';
+import Uploads from '../../components/Uploads';
+import Helpsection from '../../components/HelpSection';
+
+
+
+
+
+
+
+export const Help = () => {
+  const [showModal, setShowModal] = React.useState(false);
+
+  let ShowModalCSS = "None";
+
+
+  
+
+  
+
+
+  //implement function to close modal
+  //to do list
+
+
+  //not using React boostrap, using display html instead to show Modal
+
+  return (
+      <div>
+        
+
+        
+        <div className="min-h-screen bg-gray-600"> 
+
+          <Header/>
+
+        <div className="h-64">
+            <div className="p-4 m-4 bg-green-300 h-full">
+                <Helpsection/>
+            </div>
+        </div>
+        
+         
+          
+         
+            
+          
+
+          <div>
+            {/*\
+              this is for buttons and shi
+            */}
+          </div>
+         
+
+    
+        </div>
+         
+            
+      </div>
+        
+      
+
+
+
+
+
+
+      
+    )
+    
+
+  }

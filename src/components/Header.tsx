@@ -2,6 +2,7 @@ import * as React from 'react';
 // import logo from '../images/logo';
 import logo from "../images/githublogo.png"
 import group from "../images/Group10logo2.png"
+import { Link } from "gatsby"
 
 
 
@@ -17,16 +18,18 @@ export default class Header extends React.Component {
                            
                             <a className="text-base font-bold text-gray-500 hover:text-gray-900">
                                 <img className="h-10"src={group} alt="Group 10 Logo" ></img>
-                               
+                                <Link to="/">Home</Link>
                             </a>
 
                             <a className="text-base font-medium text-gray-500 hover:text-gray-900">
-                                Help
+                                    <Link to="/help">Help</Link>
+
                             </a>
+
                             
                             <a className="text-base font-medium text-gray-500 hover:text-gray-900">
                                 
-                                About
+                                    <Link to="/about">about</Link>
                             </a>
                             
                             <button className="border border-gray-900 bg-gray-700 text-white rounded-md px-4 py-2 m-2 hover:bg-gray-800 transition duration-500 ease">

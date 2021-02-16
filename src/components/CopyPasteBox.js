@@ -2,6 +2,7 @@ import * as React from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import { Card, Header, Form, Input, Icon } from "semantic-ui-react";
 //import textshown from './textToBeShown.txt'
+import Uploads from '../components/Uploads'
 
 
 function getFileData(fileUploaded) {

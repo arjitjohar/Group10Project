@@ -14,7 +14,7 @@ export default class CopyPasteBox extends React.Component {
 
     render() {
         const style = {
-            width: "100%",
+            width: "900px",
             height: "400px",
         };
 
@@ -31,7 +31,7 @@ export default class CopyPasteBox extends React.Component {
                         {/*text box */}
                     </textarea>
 
-                    <div className="grid justify-center flex-col">
+                    <div className="grid justify-center flex-row">
                         <button
                             onClick={this.onClickButton1}
                             className="border border-gray-900 bg-gray-700 text-white rounded-md px-4 py-2 m-2 hover:bg-gray-800 transition duration-500 ease"

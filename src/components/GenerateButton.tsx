@@ -1,19 +1,11 @@
-import * as React from 'react';
-// import logo from '../images/logo';
-
-
+import * as React from "react";
 
 export default class Header extends React.Component {
-
     render() {
         return (
-            
             <div>
-                 <button></button>
+                <button></button>
             </div>
-        )
-
-
-
+        );
     }
 }

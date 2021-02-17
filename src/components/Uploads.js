@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+//import {SorryThisIsFake} from './hey.txt'
+
 
 class Uploads extends Component {
 
@@ -17,11 +19,30 @@ class Uploads extends Component {
     reader.readAsText(e.target.files[0])
   }
 
+
+  // ShownConversion = (props) => {
+  //   //const isLoggedIn = props.isLoggedIn;
+  //   const isLoggedIn = true;
+
+  //   if (isLoggedIn) {
+  //     return <SorryThisIsFake />;
+  //   }
+  //   return <></>;
+  // }
+
+
+
+
+
+
+
+
+
   render = () => {
 
     return (<div>
       <input type="file" onChange={(e) => this.showFile(e)} />
-      <p> </p>
+      {/* <SorryThisIsFake /> */}
     </div>
     )
   }

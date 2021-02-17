@@ -22,13 +22,10 @@ export default class CopyPasteBox extends React.Component {
   
   render(){
     const style = {
-      display: 'flex',
-      maxHeight:'800px',
-      minHeight:'500px',
-      resize:'none',
-      padding:'9px',
-      boxSizing:'border-box',
-      fontSize:'15px'
+  
+      width: '100%',
+      height: '400px',
+      width: '900px'
     };
 
     const buttonstyle = {
@@ -72,14 +69,12 @@ export default class CopyPasteBox extends React.Component {
 
       <div>
 
-        <textarea className="rounded-md" style={style} cols="200" placeholder="this text will show in the textarea">
+        <textarea className="rounded-md w-4/5 content-center" style={style} placeholder="this text will show in the textarea">
           {/*text box */}
         </textarea>
 
           
-            <div className="grid justify-center">
-
-              <div className="">
+            <div className="grid justify-center flex-col">
                 <button onClick={this.onClickButton1} className="border border-gray-900 bg-gray-700 text-white rounded-md px-4 py-2 m-2 hover:bg-gray-800 transition duration-500 ease">
                   Start Conversion
                 </button>
@@ -93,7 +88,6 @@ export default class CopyPasteBox extends React.Component {
            
 
 
-      </div>
       </>
     );
   }

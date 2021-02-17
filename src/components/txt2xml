@@ -3,6 +3,8 @@ import React, { Component } from "react";
 class Uploads extends Component {
     constructor(props) {
         super(props);
+
+        
     }
 
     showFile = async e => {
@@ -13,16 +15,13 @@ class Uploads extends Component {
             console.log(text);
             alert(text);
         };
-        reader.readAsText(e.target.files);
-        reader.readAsText(text);
-
+        reader.readAsText(e.target.files[0]);
     };
 
     render = () => {
         return (
             <div>
                 <input type="file" onChange={e => this.showFile(e)} />
-                {/* reader.readAsText(file); */}
             </div>
         );
     };

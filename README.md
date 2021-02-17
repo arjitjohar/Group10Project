@@ -4,7 +4,7 @@ Here we present our current prototype of the Textsheet to Music XML Converter!
 
 This application is a web based created with React-Typescript + Gastby + Go
 
-In order to run this program, please enter the link (INSERT LINK HERE) into any popular web browser (Chrome, Edge, Firefox),  either on mobile or desktop!
+In order to run this program, please enter the link https://yasir720githubiomain.gtsb.io/ into any popular web browser (Chrome, Edge, Firefox),  either on mobile or desktop!
 
 Once you have reached the webpage, refer to the help section to get more information regarding how to complete the conversion.
 

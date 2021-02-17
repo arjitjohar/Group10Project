@@ -3,6 +3,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Card, Header, Form, Input, Icon } from "semantic-ui-react";
 //import textshown from './textToBeShown.txt'
 
+import { ShowFile } from './FileUpload'
+
 
 var x = (v' /= ((v / (v' / 1)) / ((3 / 2) + (v' * v'))))
  

@@ -1,11 +1,11 @@
 
-
 import * as React from 'react'
 import FileUploadBox from '../../components/FileUploadBox';
 import CopyPasteBox from '../../components/CopyPasteBox';
 //import Modal from 'react-bootstrap/Modal';
 import Header from '../../components/header';
 import Uploads from '../../components/Uploads';
+import Helpsection from '../../components/HelpSection';
 
 
 
@@ -13,7 +13,7 @@ import Uploads from '../../components/Uploads';
 
 
 
-export const Landing = () => {
+export const Help = () => {
   const [showModal, setShowModal] = React.useState(false);
 
   let ShowModalCSS = "None";
@@ -38,17 +38,18 @@ export const Landing = () => {
         <div className="min-h-screen bg-gray-600"> 
 
           <Header/>
-         
-         
-          <div className="mt-3 flex justify-center"> 
-            <FileUploadBox/>   
-          </div>
 
-          <Uploads/> 
-
-          <div className="mt-6 flex justify-center"> 
-              <CopyPasteBox/>
-          </div>
+        <div className="h-64">
+            <div className="p-4 m-4 bg-green-300 h-full">
+                <Helpsection/>
+            </div>
+        </div>
+        
+         
+          
+         
+            
+          
 
           <div>
             {/*\
@@ -75,4 +76,3 @@ export const Landing = () => {
     
 
   }
-

@@ -15,20 +15,16 @@ export const Help = () => {
 
     return (
         <div>
-            <div className="min-h-screen bg-gray-600">
+            <div className="bg-auto bg-blue-400">
                 <Header />
 
-                <div className="h-64">
-                    <div className="p-4 m-4 bg-green-300 h-full">
-                        <Helpsection />
-                    </div>
-                </div>
+                
+                    
+                <Helpsection/>
+                   
+                
 
-                <div>
-                    {/*\
-              this is for buttons and shi
-            */}
-                </div>
+                
             </div>
         </div>
     );

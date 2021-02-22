@@ -17,7 +17,9 @@ export default class Helpsection extends React.Component {
         return (
             <>
                 <div>
-                    <p className="text-5xl text-white">Purpose</p>
+                    
+                        <p className="flex justify-center text-5xl text-white">Purpose</p>
+                    
 
                     <br></br>
                     <br></br>
@@ -27,6 +29,7 @@ export default class Helpsection extends React.Component {
                         used to convert .txt textsheet music sheets into
                         MusicXML files.
                     </p>
+                    
                     <br></br>
 
                     <p>

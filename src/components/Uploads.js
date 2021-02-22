@@ -1,28 +1,28 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 
 class Uploads extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            textFile: "not shown",
+        };
     }
 
     showFile = async e => {
         e.preventDefault();
         const reader = new FileReader();
         reader.onload = async e => {
-            const text = e.target.result;
-            console.log(text);
-            alert(text);
+            var text = e.target.result;
+            this.setState({ textFile: e.target.result });
         };
-        reader.readAsText(e.target.files);
-        reader.readAsText(text);
-
+        reader.readAsText(e.target.files[0]);
     };
 
     render = () => {
         return (
             <div>
                 <input type="file" onChange={e => this.showFile(e)} />
-                {/* reader.readAsText(file); */}
+                <h1> {this.state.textFile}</h1>
             </div>
         );
     };

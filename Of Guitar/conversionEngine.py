@@ -15,6 +15,7 @@ def xmlConverter(someFile, nameFile, timeSig):
         voice = ''
         typeOfNote = ''  # type of note
         stem = ''
+        noteHead = ''
         beamNumber = ''
 
 
@@ -24,8 +25,7 @@ def xmlConverter(someFile, nameFile, timeSig):
             self.letter = letter
             self.Octave = Octave
 
-        def setDuration(self, duration):
-            self.duration = str(duration)
+        
 
         def setTypeOfNote(self, typeOfNote):
             self.typeOfNote = typeOfNote
@@ -33,69 +33,101 @@ def xmlConverter(someFile, nameFile, timeSig):
         def isChord(self):
             return False
 
-        def getType(self):
-            return self.typeOfNote
+        
 
-        def setAlter(self):
-            self.alter = '1'
+        # def setAlter(self):
+        #     self.alter = '1'
 
-        def getAlter(self):
-            return self.alter
+        # def getAlter(self):
+        #     return self.alter
 
         def setString(self, string):
             self.string = string
 
-        def setFret(self, fret):
-            self.fret = str(fret)
+        # def setFret(self, fret):
+        #     self.fret = str(fret)
+
+        
+
+################################################################################################
+
+        def setStep(self, step):
+            self.step = step
+
+        def setOct(self, oct):
+            self.oct = oct
+
+        def setDuration(self, duration):
+            self.duration = str(duration)
+
+        def setInstrument(self, duration):
+            self.duration = str(duration)
 
         def setVoice(self, voice):
             self.voice = voice
 
+        def getType(self):
+            return self.typeOfNote
+
+        def setStem(self, stem):
+            self.stem = stem
+
+        def setStem(self, noteHead):
+            self.noteHead = noteHead
+
+        def setBeamNum(self, beamNum):
+            self.beamNum = beamNum
 
 
-    # not needed for drums ###############################################################
-    def whatOctave(string, fret):
+
+    ###############################################################
+    def whatOctave(step):
         tempoctave = 0
 
-        if string == 5:
-            if fret <= 7:  # indexed E = 0 and b = 7 for me -alp: kalin e teli bu
-                tempoctave = 2
-            else:
-                tempoctave = 3
-        elif string == 4:  # A
-            if fret <= 3:
-                tempoctave = 2
-            else:
-                tempoctave = 3
-        elif string == 3:  # D
-            if fret <= 9:
-                tempoctave = 3
-            else:
-                tempoctave = 4
-        elif string == 2:
-            if fret <= 4:
-                tempoctave = 3
-            else:
-                tempoctave = 4
-        elif string == 1:
-            if fret == 0:
-                tempoctave = 3
-            elif fret <= 12:
-                tempoctave = 4
-            else:
-                tempoctave = 5
-        elif string == 0:
-            if fret <= 7:
-                tempoctave = 4
-            else:
-                tempoctave = 5
+        if (step == 'A' | step == 'G' | step == 'C' | step == 'D' | step == 'E'):
+            octIs = 5
+        elif step == 'F':  # A
+            octIs = 4
         else:
-            print("String input might be wrong")
+            print("Step input might be wrong")
         # print string, 'string whattt'
         # print fret, 'fret'
 
         # print(tempoctave)
-        return str(tempoctave)
+        return str(octIs)
+
+    def whatStemDirection(step):
+        tempoctave = 0
+
+        if (step == 'A' | step == 'G' | step == 'C' | step == 'D' | step == 'E'):
+            stemDirection = 'up'
+        elif step == 'F':  # A
+            stemDirection = 'down'
+        else:
+            print("Step input might be wrong")
+        # print string, 'string whattt'
+        # print fret, 'fret'
+
+        # print(tempoctave)
+        return str(stemDirection)
+
+    def whatNoteHead(Head):
+        tempoctave = 0
+
+        if (step == 'A' | step == 'G' | step == 'C' | step == 'D' | step == 'E'):
+            stemDirection = 'up'
+        elif step == 'F':  # A
+            stemDirection = 'down'
+        else:
+            print("Step input might be wrong")
+        # print string, 'string whattt'
+        # print fret, 'fret'
+
+        # print(tempoctave)
+        return str(stemDirection)
+
+
+
 
     # function for type calculation and selection gonna do something later
     def totalTime(timeSelection):

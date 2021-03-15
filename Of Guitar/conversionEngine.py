@@ -21,17 +21,17 @@ def xmlConverter(someFile, nameFile, timeSig):
 
 
 
-        def __init__(self, letter, Octave):
-            self.letter = letter
-            self.Octave = Octave
+        # def __init__(self, letter, Octave):
+        #     self.letter = letter
+        #     self.Octave = Octave
 
         
 
-        def setTypeOfNote(self, typeOfNote):
-            self.typeOfNote = typeOfNote
+        # def setTypeOfNote(self, typeOfNote):
+        #     self.typeOfNote = typeOfNote
 
-        def isChord(self):
-            return False
+        # def isChord(self):
+        #     return False
 
         
 
@@ -41,8 +41,8 @@ def xmlConverter(someFile, nameFile, timeSig):
         # def getAlter(self):
         #     return self.alter
 
-        def setString(self, string):
-            self.string = string
+        # def setString(self, string):
+        #     self.string = string
 
         # def setFret(self, fret):
         #     self.fret = str(fret)
@@ -72,7 +72,7 @@ def xmlConverter(someFile, nameFile, timeSig):
         def setStem(self, stem):
             self.stem = stem
 
-        def setStem(self, noteHead):
+        def setNoteHead(self, noteHead):
             self.noteHead = noteHead
 
         def setBeamNum(self, beamNum):
@@ -82,7 +82,8 @@ def xmlConverter(someFile, nameFile, timeSig):
 
     ###############################################################
     def whatOctave(step):
-        tempoctave = 0
+        # input is the letter/line# of the note that is being played
+        
 
         if (step == 'A' | step == 'G' | step == 'C' | step == 'D' | step == 'E'):
             octIs = 5
@@ -90,14 +91,11 @@ def xmlConverter(someFile, nameFile, timeSig):
             octIs = 4
         else:
             print("Step input might be wrong")
-        # print string, 'string whattt'
-        # print fret, 'fret'
 
         # print(tempoctave)
         return str(octIs)
 
     def whatStemDirection(step):
-        tempoctave = 0
 
         if (step == 'A' | step == 'G' | step == 'C' | step == 'D' | step == 'E'):
             stemDirection = 'up'
@@ -105,26 +103,51 @@ def xmlConverter(someFile, nameFile, timeSig):
             stemDirection = 'down'
         else:
             print("Step input might be wrong")
-        # print string, 'string whattt'
-        # print fret, 'fret'
 
-        # print(tempoctave)
         return str(stemDirection)
 
-    def whatNoteHead(Head):
-        tempoctave = 0
+    # def whatNoteHead(Head):
+    #     tempoctave = 0
 
-        if (step == 'A' | step == 'G' | step == 'C' | step == 'D' | step == 'E'):
-            stemDirection = 'up'
-        elif step == 'F':  # A
-            stemDirection = 'down'
+    #     if (step == 'A' | step == 'G' | step == 'C' | step == 'D' | step == 'E'):
+    #         stemDirection = 'up'
+    #     elif step == 'F':  # A
+    #         stemDirection = 'down'
+    #     else:
+    #         print("Step input might be wrong")
+    #     # print string, 'string whattt'
+    #     # print fret, 'fret'
+
+    #     # print(tempoctave)
+    #     return str(stemDirection)
+
+
+    def whatInstrument(initals):
+
+        if (initals == 'CC'):
+            instrumentID = 'P1-I50'
+        elif (initals == 'HH'):  
+            instrumentID = 'P1-I43'
+        elif (initals == 'SD'):  
+            instrumentID = 'P1-I39'
+        elif (initals == 'HT'):  
+            instrumentID = 'P1-I46'
+        elif (initals == 'MT'):  
+            instrumentID = 'P1-I48'
+        elif (initals == 'BD'):  
+            instrumentID = 'P1-I36'
         else:
-            print("Step input might be wrong")
-        # print string, 'string whattt'
-        # print fret, 'fret'
+            print("Insrtument not identified")
+        return str(instrumentID)
 
-        # print(tempoctave)
-        return str(stemDirection)
+    def whatNoteHead(noteSymbol):
+        if (noteSymbol == 'X'):
+            typeOfNoteHead = 'x'
+        elif (noteSymbol == 'O'):  
+            typeOfNoteHead = ''
+        else:
+            print("Insrtument not identified")
+        return str(typeOfNoteHead)
 
 
 
@@ -300,13 +323,13 @@ def xmlConverter(someFile, nameFile, timeSig):
         return Note(letter, octave)
 
 
-    def isAlter(alterednote):
-        arrOfAlter = ['F#', 'G#', 'A#', 'C#', 'D#']
-        arrOfNonAlter = ['F', 'G', 'A', 'C', 'D']
-        if alterednote in arrOfAlter:
-            return arrOfNonAlter[arrOfAlter.index(alterednote)]
-        else:
-            return False
+    # def isAlter(alterednote):
+    #     arrOfAlter = ['F#', 'G#', 'A#', 'C#', 'D#']
+    #     arrOfNonAlter = ['F', 'G', 'A', 'C', 'D']
+    #     if alterednote in arrOfAlter:
+    #         return arrOfNonAlter[arrOfAlter.index(alterednote)]
+    #     else:
+    #         return False
 
     # function that takes one line until the '|' and sets everything for that line only, call a for loop later
     def noteArrayMaker(tra_list):

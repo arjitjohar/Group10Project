@@ -244,7 +244,7 @@ while True:
                     print("is bars on same line "+str(isAllBarsonSameLine(transpose_list)))
                     print("is bouded "+str(isBounded(txt)))
                     print("is first characted in the tab valid "+str(isFirstCharactersInTabValid(transpose_list)))
-                    CE.xmlConverter(filename,completeName, timesig)
+                    CE.xmlConverter(text,completeName, timesig)
                     bigPoop = open(completeName, "r")
                     window["-TOUT-"].update(bigPoop.read())
                     window["-userTodo-"].update("Todo: Select another tablature text file and if needed, change the tablature directory")

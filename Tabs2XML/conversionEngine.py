@@ -176,8 +176,7 @@ def xmlConverter(someFile, nameFile, timeSig):
                         noteTypeHelper(note, whatType)
 
 
-    f = open(someFile, "r")
-    text = f.read().split()
+    text=someFile.split()
     textarr = []
 
 

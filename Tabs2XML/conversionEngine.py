@@ -5,7 +5,7 @@ from xml.dom import minidom
 from itertools import cycle
 
 
-# =======CLASSES TO USE LATER=============
+    # =======CLASSES TO USE LATER=============
 def xmlConverter(someFile, nameFile, timeSig):
     class Note:
         letter = ''
@@ -16,6 +16,7 @@ def xmlConverter(someFile, nameFile, timeSig):
         string = ''
         fret = ''
         voice = '1'
+        grace = False
 
 
         def __init__(self, letter, Octave):
@@ -48,6 +49,12 @@ def xmlConverter(someFile, nameFile, timeSig):
 
         def setVoice(self, voice):
             self.voice = voice
+
+        def isGrace(self):
+            return self.grace
+
+
+
 
     def whatOctave(string, fret):
         tempoctave = 0
@@ -98,8 +105,6 @@ def xmlConverter(someFile, nameFile, timeSig):
             return 4
         elif timeSelection == '3/4':
             return 3
-        elif timeSelection == '2/4':
-            return 2
 
     # ======== GONNA CHANGE IT LATER
     def noteTypeHelper(note, whatType):
@@ -123,56 +128,55 @@ def xmlConverter(someFile, nameFile, timeSig):
 
 
 
-    def noteTypeCalculator(arrOfNotes, lengthOfBar):
-        typeOfNotes = ["16th", "eighth", "quarter", "half", "whole"]
+    def noteTypeCalculator(arrOfNotes, lengthOfBar, timesignature):
         # trying something out here with the length
         tempLength = lengthOfBar - 1
         totalQuarterNoteTime = totalTime("4/4")
+        #  Arjit can u link this up to the time signature selection.
+        # it should be as follows
+        # totalQuarterNoteTime = totalTime(timesignature)
 
         for j in range(0, len(arrOfNotes)):
             # it takes 4 quarter notes to play
+
             if arrOfNotes[j] != 'measure':
                 notePosition = arrOfNotes[j][1]
                 note = arrOfNotes[j][0]
-                nextNotePosition = -1
+                if note.grace:
+                    pass
+                else:
+                    nextNotePosition = -1
 
-                if j != len(arrOfNotes) - 2:
-                    if arrOfNotes[j + 1] == 'measure':
-                        nextNotePosition = arrOfNotes[j + 2][1]
-                    else:
-                        nextNotePosition = arrOfNotes[j + 1][1]
+                    if j != len(arrOfNotes) - 2:
+                        if arrOfNotes[j + 1] == 'measure':
+                            nextNotePosition = arrOfNotes[j + 2][1]
+                        else:
+                            nextNotePosition = arrOfNotes[j + 1][1]
 
-                    if nextNotePosition <= notePosition:
-                        nextNotePosition = lengthOfBar
+                        if nextNotePosition <= notePosition:
+                            nextNotePosition = lengthOfBar
 
                 # if there are no notes until the next | which resets the numbers
-                else:
-                    nextNotePosition = lengthOfBar
+                    else:
+                        nextNotePosition = lengthOfBar
                 # variables are set for comparison
                 # print nextNotePosition, 'next note'
                 # print notePosition, 'not position 2'
-                difference = (nextNotePosition - notePosition)
-                how_much_ratio = float(difference) / tempLength
-                whatType = how_much_ratio * totalQuarterNoteTime
-                if len(arrOfNotes[j]) > 2:
+                    difference = (nextNotePosition - notePosition)
+                    how_much_ratio = float(difference) / tempLength
+                    whatType = how_much_ratio * totalQuarterNoteTime
+                    if len(arrOfNotes[j]) > 2:
                     # later idea below
                     # for i in range(0, len(arrOfNotes[j]) - 1, 2):
-                        # min = whatType
-                    for i in range(0, len(arrOfNotes[j]), 2): # need to increment by 2 for chords because i am sleepy and i fucked up
-                        noteTypeHelper(arrOfNotes[j][i], whatType)
-                else:
-                    noteTypeHelper(note, whatType)
+                    # min = whatType
+                        for i in range(0, len(arrOfNotes[j]),
+                                2):  # need to increment by 2 for chords because i am sleepy and i fucked up
+                            noteTypeHelper(arrOfNotes[j][i], whatType)
+                    else:
+                        noteTypeHelper(note, whatType)
 
 
-
-
-
-
-
-
-
-    f = open(someFile, "r")
-    text = f.read().split()
+    text=someFile.split()
     textarr = []
 
 
@@ -225,6 +229,7 @@ def xmlConverter(someFile, nameFile, timeSig):
             5: ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E"],
         }
 
+
         return switcher.get(_string)[fret]
 
 
@@ -272,50 +277,87 @@ def xmlConverter(someFile, nameFile, timeSig):
             return False
 
     # function that takes one line until the '|' and sets everything for that line only, call a for loop later
+    def isLetter(string):
+        if string == '-':
+            return False
+        else:
+            return True
+
     def noteArrayMaker(tra_list):
         notesAndChords = []
         position = -1
         length = 0
         barNumber = -1
-        for vertLine in tra_list:
-            if vertLine[0] != '|':
-                position += 1
-                length += 1
-            else:
-                barNumber += 1
-                position = -1
+        for idx, vertLine in enumerate(tra_list):
+            if idx == len(tra_list) - 1:
                 notesAndChords.append('measure')
-            tempList = []
-            for i in range(0, len(vertLine)):
-                string = vertLine[i]
-                if isNum(string):
-                    # print isAlter(noteFun(i, int(string))), 'it is not if its false'
-                    if not isAlter(noteFun(i, int(string))):
-                        tempNote = makeNote(noteFun(i, int(string)), whatOctave(i, int(string)))
-                        # print tempNote.letter
-                        tempNote.setString(i)
-                        tempNote.setFret(string)
-                        tempList.append(tempNote)
-                    else:
-                        # makes a note with the parameter type (the letter) and the octave of that note which are set
-                        tempNote = makeNote(isAlter(noteFun(i, int(string))), whatOctave(i, int(string)))
-                        tempNote.setAlter()
-                        tempNote.setString(i)
-                        tempNote.setFret(int(string))
-                        tempList.append(tempNote)
-                    tempList.append(position)
-            if len(tempList) >= 1:
-                notesAndChords.append(tempList)
-        noteTypeCalculator(notesAndChords, length/barNumber)
+                barNumber += 1
+            else:
+                if vertLine[1] != '|':
+                    position += 1
+                    length += 1
+                else:
+                    barNumber += 1
+                    position = -1
+                    notesAndChords.append('measure')
+                tempList = []
 
+                # the list of chars are tralist [[][][][][]]
+                for i in range(0, len(vertLine)):
+                    isItLetters = False
+                    isGrace = False
+                    string = vertLine[i]
+                    backString = tra_list[idx - 1][i]
+                    if isNum(string):
+                        nextString = tra_list[idx + 1][i]
+                        nextNextString = tra_list[idx + 2][i]
+
+                        if isNum(backString):
+                            pass
+                        else:
+                            if isLetter(backString):
+                                if backString == 'g':
+                                    isGrace = True
+
+                            if isNum(nextString):
+                                string = string + nextString
+
+                            if not isAlter(noteFun(i, int(string))):
+                                tempNote = makeNote(noteFun(i, int(string)), whatOctave(i, int(string)))
+                            # print tempNote.letter
+                                tempNote.setString(i)
+                                tempNote.setFret(string)
+                                tempList.append(tempNote)
+                                if isGrace:
+                                    tempNote.grace = True
+                            else:
+                                # makes a note with the parameter type (the letter) and the octave of that note which are set
+                                tempNote = makeNote(isAlter(noteFun(i, int(string))), whatOctave(i, int(string)))
+                                tempNote.setAlter()
+                                tempNote.setString(i)
+                                tempNote.setFret(int(string))
+                                tempList.append(tempNote)
+                                if isGrace:
+                                    tempNote.grace = True
+                            tempList.append(position)
+
+
+                if len(tempList) >= 1:
+                    notesAndChords.append(tempList)
+            # end of first for loop
+        # after all the notes are done the second for loop
+
+
+        noteTypeCalculator(notesAndChords, length / barNumber, "4/4")
         return notesAndChords
 
 
     def startProgram(arr):
+
         m = 1
         chordPresent = False
         for idx, lists in enumerate(noteArrayMaker(arr)):
-            if lists == 'measure' :
+            if lists == 'measure':
                 if idx != len(noteArrayMaker(arr)) - 1:
                     measure = ET.SubElement(part, "measure", number=str(m))  # place a measure
                 if m == 1:
@@ -383,6 +425,8 @@ def xmlConverter(someFile, nameFile, timeSig):
                     chordPresent = False
                     noteObject = lists[0]
                     note = ET.SubElement(measure, "note")
+                    if noteObject.grace:
+                        ET.SubElement(note, "grace")
                     pitch = ET.SubElement(note, "pitch")
                     step = ET.SubElement(pitch, "step").text = noteObject.letter
                     if noteObject.alter != 'not_altered':
@@ -400,13 +444,37 @@ def xmlConverter(someFile, nameFile, timeSig):
 
 
 
+
     # methods for object to xml
     # for note in range(0, len(noteArrayMaker(transpose_list)[0]) - 1, 2):
         # print noteArrayMaker(transpose_list)[0][note].getType()
     startProgram(transpose_list)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     xmlstr = minidom.parseString(ET.tostring(score_partwise)).toprettyxml(indent="   ")
 
+    
     tree.write(nameFile)
 
     with open(nameFile, "w") as f:

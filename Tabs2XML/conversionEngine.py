@@ -176,7 +176,7 @@ def xmlConverter(someFile, nameFile, timeSig):
                         noteTypeHelper(note, whatType)
 
 
-    text=someFile.split()
+    text=FixSpaceWithDash(someFile).split() # I CHANGED THIS LINE - SEE LINE 448
     textarr = []
 
 
@@ -439,6 +439,15 @@ def xmlConverter(someFile, nameFile, timeSig):
                     technical = ET.SubElement(notations, "technical")
                     string = ET.SubElement(technical, "string").text = str(int(noteObject.string) + 1)
                     fret = ET.SubElement(technical, "fret").text = noteObject.fret
+    
+    def NoteTypeDrums(note): #not finished
+        finaltype="eighth" 
+
+        return finaltype
+
+    def FixSpaceWithDash(someFile):  # Is now implimented using line 179 - meant to be used before the split happens - we can change this to afterwards if nessisary
+        someFileFixed = someFile.replace(" ","-")  # I changed line 179 from someFile to what this method returns
+        return someFileFixed
 
 
 

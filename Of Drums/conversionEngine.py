@@ -247,15 +247,68 @@ def xmlConverter(someFile, nameFile, timeSig):
 
     score_partwise = ET.Element("score-partwise", version="3.1")
     part_list = ET.SubElement(score_partwise, "part-list")
-
     score_part = ET.SubElement(part_list, "score-part", id="P1")
-
     part_name = ET.SubElement(score_part, "part-name").text = "Classical Guitar"  # input part name here from user
-
-    part = ET.SubElement(score_partwise, "part", id="P1")
-
     tree = ET.ElementTree(score_partwise)
+    instrument_ID = ET.Element()
 
+    for i in range(25):
+        instru_id = {
+            0: "P1-I36",
+            1: "P1-I37",
+            2: "P1-I38",
+            3: "P1-I39",
+            4: "P1-I42",
+            5: "P1-I43",
+            6: "P1-I44",
+            7: "P1-I45",
+            8: "P1-I46",
+            9: "P1-I47",
+            10: "P1-I48",
+            11: "P1-I49",
+            13: "P1-I50",
+            14: "P1-I51",
+            15: "P1-I52",
+            16: "P1-I53",
+            17: "P1-I54",
+            18: "P1-I55",
+            19: "P1-I56",
+            20: "P1-I57",
+            21: "P1-I58",
+            22: "P1-I60",
+            23: "P1-I64",
+            24: "P1-I65",
+        }
+        score_instrument = ET.SubElement(score_part, "score-instrument", id="{}".format(instru_id))
+        switcher = {  #All the instruments in drum tablatures
+            0: "Bass Drum 1",
+            1: "Bass Drum 2",
+            2: "Side Stick",
+            3: "Snare",
+            4: "Low Floor Tom",
+            5: "Closed Hi-Hat",
+            6: "High Floor Tom",
+            7: "Pedal Hi-Hat",
+            8: "Low Tom",
+            9: "Open Hi-Hat",
+            10: "Low-Mid Tom",
+            11: "Hi-Mid Tom",
+            13: "Crash Cymbal 1",
+            14: "High Tom",
+            15: "Ride Cymbal 1",
+            16: "Chinese Cymbal",
+            17: "Ride Bell",
+            18: "Tambourine",
+            19: "Splash Cymbal",
+            20: "Cowbell",
+            21: "Crash Cymbal 2",
+            22: "Ride Cymbal 2",
+            23: "Open Hi Conga",
+            24: "Low Conga",
+        }
+        instrument_name = ET.SubElement(score_instrument, "instrument-name").text = switcher.get(i)
+    #for statement for <note> <unpitched <display-step> <display-octave> <duration> <instrument id> <voice> <type> <stem> <notehead> <beam>
+    part = ET.SubElement(score_partwise, "part", id="P1")
 
     # place notes
 
@@ -309,7 +362,6 @@ def xmlConverter(someFile, nameFile, timeSig):
         noteTypeCalculator(notesAndChords, length/barNumber)
 
         return notesAndChords
-
 
     def startProgram(arr):
         m = 1

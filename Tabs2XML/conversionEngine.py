@@ -449,7 +449,15 @@ def xmlConverter(someFile, nameFile, timeSig):
         someFileFixed = someFile.replace(" ","-")  # I changed line 179 from someFile to what this method returns
         return someFileFixed
 
-
+    def isDrums(text):    #WORK IN PROGRESS
+        drums = False
+        isdrumscounter = 0
+        for i in text:
+            if text(i[0]) != "|" and text(i[1]) != "|" and text(i[3]) == "|":
+                isdrumscounter ++
+        if isdrumscounter == text.length():
+            drums = True
+        return drums
 
 
 

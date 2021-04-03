@@ -6,7 +6,7 @@ from itertools import cycle
 
 
     # =======CLASSES TO USE LATER=============
-def xmlConverter(someFile, nameFile, timeSig):
+def xmlConverter(someFile, nameFile, piece_name, timeSig):
     class Note:
         letter = ''
         Octave = ''
@@ -255,7 +255,7 @@ def xmlConverter(someFile, nameFile, timeSig):
 
     score_part = ET.SubElement(part_list, "score-part", id="P1")
 
-    part_name = ET.SubElement(score_part, "part-name").text = "Classical Guitar"  # input part name here from user
+    part_name = ET.SubElement(score_part, "part-name").text = piece_name  # input part name here from user
 
     part = ET.SubElement(score_partwise, "part", id="P1")
 

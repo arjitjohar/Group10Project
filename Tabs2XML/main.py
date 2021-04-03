@@ -55,17 +55,16 @@ def isFirstCharactersInTabValid(tab):
     #check the letters before the first vert bar
     if tab[0][0] != "|":
         #do something
-        print(tab[0])
+        return False
     else:
         return True 
 
       
-
-
-          
+filename=""
+text = ""
+txt = []         
 
     
-
 
 #say that there is no elemnt besides the wierd letter thing to show what string it is before the first bare, and show there is no element after last occurance of a vertical bar.
 
@@ -83,7 +82,7 @@ def isUnrecognizedCharacter(tab):
         for x in t:  
             if x != "|" and x != "-" and x != "h" and x != "p" and x != "b" and x != "r" and x != "/" and x != "\\" and x != "v" and x != "t" and x != "s" and x != "S" and x != "*" and x != "[" and x != "]" and x != "n" and x != "(" and x != ")" and x != "T" and x != "P" and x != "M" and x != "=" and x != "<" and x != ">" and x != "x" and x != "o" and x != "·" and x != "0" and x != "1" and x != "2" and x != "3" and x != "4" and x != "5" and x != "6" and x != "7" and x != "8" and x != "9" and x!="e" and x!="B" and x!="G" and x!="D" and x!="A" and x!="E":
                 problem = True; 
-                print(x)
+                
                 character = x
                 ind = t.index(x)
                 break
@@ -141,7 +140,7 @@ file_list_column = [
 # For now will only show the name of the file that was chosen
 image_viewer_column = [
     #[sg.Text("Choose a tablature from list on left:")],
-    [sg.Text(size=(60,2), text = "Todo: Choose a tablature from the list on the left", text_color = "pink", key="-userTodo-")],
+    [sg.Text(size=(60,2), text = "auto-detected type of music tab: ", text_color = "pink", key="-userTodo-")],
     [sg.Multiline(size=(60, 30), key="-TOUT-")],
     [sg.Image(key="-IMAGE-")],
     [sg.Text(size=(60,2), text = "", text_color = "pink", key="-error-")],
@@ -181,13 +180,13 @@ while True:
             and f.lower().endswith((".txt"))
         ]
         window["-FILE LIST-"].update(fnames)
-        window["-userTodo-"].update("Todo: Select tablature to convert from the list on the left")
+        window["-userTodo-"].update("auto-detected type of music tab:  ")
     elif event == "-FILE LIST-":  # A file was chosen from the listbox
         try:
             filename = os.path.join(
                 values["-FOLDER-"], values["-FILE LIST-"][0]
             )
-            window["-userTodo-"].update("Todo: Enter the name and the save location then hit convert")
+            window["-userTodo-"].update("auto-detected type of music tab:  ")
             
             assPoop = open(filename, "r")
             window["-TOUT-"].update(assPoop.read())
@@ -200,7 +199,7 @@ while True:
         except:
             pass
     elif event == "convert" :
-        try:
+
             save_path = values["-saveLocation-"]
             file_name = values["-pieceName-"]
             timesig = values["-LIST-"]
@@ -210,7 +209,7 @@ while True:
             completeName = os.path.join(save_path, file_name+".musicxml")
             
 
-            if filename == "" or text == "":
+            if filename == "" and text == "":
                 sg.popup("please choose a file to convert") 
             elif save_path == "":
                 sg.popup("please specify save path")
@@ -228,27 +227,27 @@ while True:
                     textarr.append(list(t))
 
                 
-                if isAllStringsSameLength(txt) == False: 
-                    window["-error-"].update("all strings are not the same length!")
-                elif isNotEmpty(txt) == False:
-                    window["-error-"].update("the Ascii Tab is empty")
-                else:
-                    window["-error-"].update("")
-                    numpy_array = np.array(textarr)
-                    transpose = numpy_array.T
-                    transpose_list = transpose.tolist()
-                        
-                    print("all strings same length "+str(isAllStringsSameLength(txt)))
-                    print("not empty "+str(isNotEmpty(txt)))
+            if isAllStringsSameLength(txt) == False: 
+                window["-error-"].update("all strings are not the same length!")
+            elif isNotEmpty(txt) == False:
+                window["-error-"].update("the Ascii Tab is empty")
+
+            elif isUnrecognizedCharacter(txt):
+                window["-error-"].update("theres unregognized characters")
+            else:
+                bwindow["-userTodo-"].update("auto-detected type of music tab:  ")
+
+                window["-error-"].update("")
+                numpy_array = np.array(textarr)
+                transpose = numpy_array.T
+                transpose_list = transpose.tolist()
                     
-                    print("is bars on same line "+str(isAllBarsonSameLine(transpose_list)))
-                    print("is bouded "+str(isBounded(txt)))
-                    print("is first characted in the tab valid "+str(isFirstCharactersInTabValid(transpose_list)))
-                    CE.xmlConverter(text,completeName, timesig)
-                    bigPoop = open(completeName, "r")
-                    window["-TOUT-"].update(bigPoop.read())
-                    window["-userTodo-"].update("Todo: Select another tablature text file and if needed, change the tablature directory")
-                
+
+                CE.xmlConverter(text,completeName,file_name, timesig)
+                bigPoop = open(completeName, "r")
+                window["-TOUT-"].update(bigPoop.read())
+                window["-userTodo-"].update("Todo: Select another tablature text file and if needed, change the tablature directory")
+            
 
 
   
@@ -261,9 +260,6 @@ while True:
                 # file1.close()
             
 
-        except:
-            #onl shows if there is nothing to convert thats why this popup is here instead of an if statement 
-            sg.popup("please choose a file to convert")
             
         
         

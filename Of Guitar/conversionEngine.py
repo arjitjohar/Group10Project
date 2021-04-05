@@ -5,8 +5,14 @@ from xml.dom import minidom
 from itertools import cycle
 
 
+
+
 # =======CLASSES TO USE LATER=============
 def xmlConverter(someFile, nameFile, timeSig):
+
+
+
+    
     class Note:
         displayStep = ''
         displayOctave = ''
@@ -18,22 +24,15 @@ def xmlConverter(someFile, nameFile, timeSig):
         noteHead = ''
         beamNumber = ''
 
-
-
-
         # def __init__(self, letter, Octave):
         #     self.letter = letter
         #     self.Octave = Octave
-
-        
 
         # def setTypeOfNote(self, typeOfNote):
         #     self.typeOfNote = typeOfNote
 
         # def isChord(self):
         #     return False
-
-        
 
         # def setAlter(self):
         #     self.alter = '1'
@@ -47,7 +46,6 @@ def xmlConverter(someFile, nameFile, timeSig):
         # def setFret(self, fret):
         #     self.fret = str(fret)
 
-        
 
 ################################################################################################
 
@@ -78,12 +76,10 @@ def xmlConverter(someFile, nameFile, timeSig):
         def setBeamNum(self, beamNum):
             self.beamNum = beamNum
 
-
-
     ###############################################################
+
     def whatOctave(step):
         # input is the letter/line# of the note that is being played
-        
 
         if (step == 'A' | step == 'G' | step == 'C' | step == 'D' | step == 'E'):
             octIs = 5
@@ -121,20 +117,19 @@ def xmlConverter(someFile, nameFile, timeSig):
     #     # print(tempoctave)
     #     return str(stemDirection)
 
-
     def whatInstrument(initals):
 
         if (initals == 'CC'):
             instrumentID = 'P1-I50'
-        elif (initals == 'HH'):  
+        elif (initals == 'HH'):
             instrumentID = 'P1-I43'
-        elif (initals == 'SD'):  
+        elif (initals == 'SD'):
             instrumentID = 'P1-I39'
-        elif (initals == 'HT'):  
+        elif (initals == 'HT'):
             instrumentID = 'P1-I46'
-        elif (initals == 'MT'):  
+        elif (initals == 'MT'):
             instrumentID = 'P1-I48'
-        elif (initals == 'BD'):  
+        elif (initals == 'BD'):
             instrumentID = 'P1-I36'
         else:
             print("Insrtument not identified")
@@ -143,16 +138,14 @@ def xmlConverter(someFile, nameFile, timeSig):
     def whatNoteHead(noteSymbol):
         if (noteSymbol == 'X'):
             typeOfNoteHead = 'x'
-        elif (noteSymbol == 'O'):  
+        elif (noteSymbol == 'O'):
             typeOfNoteHead = ''
         else:
             print("Insrtument not identified")
         return str(typeOfNoteHead)
 
-
-
-
     # function for type calculation and selection gonna do something later
+
     def totalTime(timeSelection):
         if timeSelection == '4/4':
             return 4
@@ -167,7 +160,7 @@ def xmlConverter(someFile, nameFile, timeSig):
 
         if whatType <= 0.3:
             note.setTypeOfNote(typeOfNotes[0])
-            note.setDuration("0.5")# 1th
+            note.setDuration("0.5")  # 1th
         elif whatType <= 0.6:
             note.setTypeOfNote(typeOfNotes[1])  # eight
             note.setDuration(1)
@@ -180,8 +173,6 @@ def xmlConverter(someFile, nameFile, timeSig):
         elif whatType <= 4:
             note.setTypeOfNote(typeOfNotes[4])  # whole
             note.setDuration(8)
-
-
 
     def noteTypeCalculator(arrOfNotes, lengthOfBar):
         typeOfNotes = ["16th", "eighth", "quarter", "half", "whole"]
@@ -217,25 +208,22 @@ def xmlConverter(someFile, nameFile, timeSig):
                 if len(arrOfNotes[j]) > 2:
                     # later idea below
                     # for i in range(0, len(arrOfNotes[j]) - 1, 2):
-                        # min = whatType
-                    for i in range(0, len(arrOfNotes[j]), 2): # need to increment by 2 for chords because i am sleepy and i fucked up
+                    # min = whatType
+                    # need to increment by 2 for chords because i am sleepy and i fucked up
+                    for i in range(0, len(arrOfNotes[j]), 2):
                         noteTypeHelper(arrOfNotes[j][i], whatType)
                 else:
                     noteTypeHelper(note, whatType)
 
 
-
-
-
-
-
-
-
+#open(file, mode)
     f = open(someFile, "r")
+#The split() method splits a string into a list
+#The read() method returns the specified number of bytes from the file. Default is -1 which means the whole file
     text = f.read().split()
+    # what text would look like ---> ['hi', 'there']
     textarr = []
-
-
+    # what textarr would look like ---> [['h', 'i'], ['t', 'h', 'e', 'r', 'e']]
 
     # Python3 program to Split string into characters
     for t in text:
@@ -244,9 +232,6 @@ def xmlConverter(someFile, nameFile, timeSig):
     numpy_array = np.array(textarr)
     transpose = numpy_array.T
     transpose_list = transpose.tolist()
-
-
-
 
     def duration(fret):  # find the next occurence of a number
         dur = 0
@@ -262,19 +247,20 @@ def xmlConverter(someFile, nameFile, timeSig):
         else:
             return dur
 
-
     durations = []
     for i in range(len(transpose_list)):
         durations.append(duration(i))
 
     notes = []
 
+    # function gets the name of the note that was played
 
-    ##function gets the name of the note that was played
     def noteFun(_string, fret):
-        enote = ["F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E"]
+        enote = ["F", "F#", "G", "G#", "A",
+                 "A#", "B", "C", "C#", "D", "D#", "E"]
 
-        enote = ["F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E"]
+        enote = ["F", "F#", "G", "G#", "A",
+                 "A#", "B", "C", "C#", "D", "D#", "E"]
 
         switcher = {  # default tuning mapping based of string.
             0: ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E"],
@@ -287,51 +273,55 @@ def xmlConverter(someFile, nameFile, timeSig):
 
         return switcher.get(_string)[fret]
 
-
     def isChord(fret):
         if len(set(fret)) > 2:
             return True
         else:
             return False
 
-
     def isNum(x):
-        num = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "13", "14"]
+        num = ["0", "1", "2", "3", "4", "5", "6",
+               "7", "8", "9", "10", "11", "13", "14"]
         return x in num
-
 
     def numToString(n):
         letters = ["E", "A", "D", "G", "B", "E"]
         return letters[n]
-
 
     score_partwise = ET.Element("score-partwise", version="3.1")
     part_list = ET.SubElement(score_partwise, "part-list")
 
     score_part = ET.SubElement(part_list, "score-part", id="P1")
 
-    part_name = ET.SubElement(score_part, "part-name").text = "Classical Guitar"  # input part name here from user
+    # input part name here from user
+    part_name = ET.SubElement(
+        score_part, "part-name").text = "Drumset"
+    
+    score_instrument = ET.SubElement(
+        score_part, "score-instrument", id="P1-I36")
+
+    instrument_name = ET.SubElement(
+        score_instrument, "instrument-name").text = "Bass Drum 1"
 
     part = ET.SubElement(score_partwise, "part", id="P1")
 
     tree = ET.ElementTree(score_partwise)
-
 
     # place notes
 
     def makeNote(letter, octave):
         return Note(letter, octave)
 
-
-    # def isAlter(alterednote):
-    #     arrOfAlter = ['F#', 'G#', 'A#', 'C#', 'D#']
-    #     arrOfNonAlter = ['F', 'G', 'A', 'C', 'D']
-    #     if alterednote in arrOfAlter:
-    #         return arrOfNonAlter[arrOfAlter.index(alterednote)]
-    #     else:
-    #         return False
+    def isAlter(alterednote):
+        arrOfAlter = ['F#', 'G#', 'A#', 'C#', 'D#']
+        arrOfNonAlter = ['F', 'G', 'A', 'C', 'D']
+        if alterednote in arrOfAlter:
+            return arrOfNonAlter[arrOfAlter.index(alterednote)]
+        else:
+            return False
 
     # function that takes one line until the '|' and sets everything for that line only, call a for loop later
+
     def noteArrayMaker(tra_list):
         notesAndChords = []
         position = -1
@@ -351,17 +341,19 @@ def xmlConverter(someFile, nameFile, timeSig):
                 if isNum(string):
                     # print isAlter(noteFun(i, int(string))), 'it is not if its false'
                     if not isAlter(noteFun(i, int(string))):
-                        tempNote = makeNote(noteFun(i, int(string)), whatOctave(i, int(string)))
+                        tempNote = makeNote(
+                            noteFun(i, int(string)), whatOctave(i))
                         # print tempNote.letter
-                        tempNote.setString(i)
-                        tempNote.setFret(string)
+                        #tempNote.setString(i)
+                        #tempNote.setFret(string)
                         tempList.append(tempNote)
                     else:
                         # makes a note with the parameter type (the letter) and the octave of that note which are set
-                        tempNote = makeNote(isAlter(noteFun(i, int(string))), whatOctave(i, int(string)))
-                        tempNote.setAlter()
-                        tempNote.setString(i)
-                        tempNote.setFret(int(string))
+                        tempNote = makeNote(
+                            isAlter(noteFun(i, int(string))), whatOctave(i))
+                        #tempNote.setAlter()
+                        #tempNote.setString(i)
+                        #tempNote.setFret(int(string))
                         tempList.append(tempNote)
                     tempList.append(position)
             if len(tempList) >= 1:
@@ -371,40 +363,51 @@ def xmlConverter(someFile, nameFile, timeSig):
         return notesAndChords
 
 
+
+############################################################################################################################
     def startProgram(arr):
         m = 1
         chordPresent = False
         for idx, lists in enumerate(noteArrayMaker(arr)):
-            if lists == 'measure' :
+            if lists == 'measure':
                 if idx != len(noteArrayMaker(arr)) - 1:
-                    measure = ET.SubElement(part, "measure", number=str(m))  # place a measure
+                    measure = ET.SubElement(
+                        part, "measure", number=str(m))  # place a measure
                 if m == 1:
                     attributes = ET.SubElement(measure, "attributes")
-                    divisions = ET.SubElement(attributes, "divisions").text = str(2)
+                    divisions = ET.SubElement(
+                        attributes, "divisions").text = str(2)
                     key = ET.SubElement(attributes, "key")
                     fifths = ET.SubElement(key, "fifths").text = str(0)
                     t = ET.SubElement(attributes, "time")
                     if timeSig[0] == "1/4":
                         _beats = ET.SubElement(t, "beats").text = str(1)
-                        beats_type = ET.SubElement(t, "beats_type").text = str(4)
+                        beats_type = ET.SubElement(
+                            t, "beats_type").text = str(4)
                     elif timeSig[0] == "2/4":
                         _beats = ET.SubElement(t, "beats").text = str(2)
-                        beats_type = ET.SubElement(t, "beats_type").text = str(4)
+                        beats_type = ET.SubElement(
+                            t, "beats_type").text = str(4)
                     elif timeSig[0] == "3/4":
                         _beats = ET.SubElement(t, "beats").text = str(3)
-                        beats_type = ET.SubElement(t, "beats_type").text = str(4)
+                        beats_type = ET.SubElement(
+                            t, "beats_type").text = str(4)
                     elif timeSig[0] == "4/4":
                         _beats = ET.SubElement(t, "beats").text = str(4)
-                        beats_type = ET.SubElement(t, "beats_type").text = str(4)
-                    
+                        beats_type = ET.SubElement(
+                            t, "beats_type").text = str(4)
+
                     clef = ET.SubElement(attributes, "clef")
                     sign = ET.SubElement(clef, "sign").text = "TAB"
                     line = ET.SubElement(clef, "line").text = str(5)
                     staff_details = ET.SubElement(attributes, "staff-details")
-                    staff_lines = ET.SubElement(staff_details, "staff-lines").text = "6"
+                    staff_lines = ET.SubElement(
+                        staff_details, "staff-lines").text = "6"
                     for i in range(6):
-                        staff_tuning_line = ET.SubElement(staff_details, "staff-tuning", line="{}".format((i + 1)))
-                        tuning_step = ET.SubElement(staff_tuning_line, "tuning-step").text = numToString(i)
+                        staff_tuning_line = ET.SubElement(
+                            staff_details, "staff-tuning", line="{}".format((i + 1)))
+                        tuning_step = ET.SubElement(
+                            staff_tuning_line, "tuning-step").text = numToString(i)
                         switcher = {  # default tuning mapping based of string.
                             0: "2",
                             1: "2",
@@ -413,7 +416,8 @@ def xmlConverter(someFile, nameFile, timeSig):
                             4: "3",
                             5: "4",
                         }
-                        tuning_octave = ET.SubElement(staff_tuning_line, "tuning-octave").text = switcher.get(i)
+                        tuning_octave = ET.SubElement(
+                            staff_tuning_line, "tuning-octave").text = switcher.get(i)
                 m += 1
             else:
                 if len(lists) > 2:
@@ -428,34 +432,50 @@ def xmlConverter(someFile, nameFile, timeSig):
                         else:
                             chord = ET.SubElement(note, "chord")
                         pitch = ET.SubElement(note, "pitch")
-                        step = ET.SubElement(pitch, "step").text = noteObject.letter
+                        step = ET.SubElement(
+                            pitch, "step").text = noteObject.letter
                         if noteObject.alter != 'not_altered':
-                            alter = ET.SubElement(pitch, "alter").text = noteObject.alter
-                        octave = ET.SubElement(pitch, "octave").text = noteObject.Octave
-                        ET.SubElement(note, "duration").text = noteObject.duration
-                        voice = ET.SubElement(note, "voice").text = noteObject.voice
-                        type = ET.SubElement(note, "type").text = noteObject.typeOfNote
+                            alter = ET.SubElement(
+                                pitch, "alter").text = noteObject.alter
+                        octave = ET.SubElement(
+                            pitch, "octave").text = noteObject.Octave
+                        ET.SubElement(
+                            note, "duration").text = noteObject.duration
+                        voice = ET.SubElement(
+                            note, "voice").text = noteObject.voice
+                        type = ET.SubElement(
+                            note, "type").text = noteObject.typeOfNote
                         notations = ET.SubElement(note, "notations")
                         technical = ET.SubElement(notations, "technical")
-                        string = ET.SubElement(technical, "string").text = str(int(noteObject.string) + 1)
-                        fret = ET.SubElement(technical, "fret").text = str(noteObject.fret)
+                        string = ET.SubElement(technical, "string").text = str(
+                            int(noteObject.string) + 1)
+                        fret = ET.SubElement(
+                            technical, "fret").text = str(noteObject.fret)
                 else:
                     chordPresent = False
                     noteObject = lists[0]
                     note = ET.SubElement(measure, "note")
                     pitch = ET.SubElement(note, "pitch")
-                    step = ET.SubElement(pitch, "step").text = noteObject.letter
+                    step = ET.SubElement(
+                        pitch, "step").text = noteObject.letter
                     if noteObject.alter != 'not_altered':
-                        alter = ET.SubElement(pitch, "alter").text = noteObject.alter
-                    octave = ET.SubElement(pitch, "octave").text = noteObject.Octave
+                        alter = ET.SubElement(
+                            pitch, "alter").text = noteObject.alter
+                    octave = ET.SubElement(
+                        pitch, "octave").text = noteObject.Octave
                     ET.SubElement(note, "duration").text = noteObject.duration
-                    voice = ET.SubElement(note, "voice").text = noteObject.voice
-                    type = ET.SubElement(note, "type").text = noteObject.typeOfNote
+                    voice = ET.SubElement(
+                        note, "voice").text = noteObject.voice
+                    type = ET.SubElement(
+                        note, "type").text = noteObject.typeOfNote
                     notations = ET.SubElement(note, "notations")
                     technical = ET.SubElement(notations, "technical")
-                    string = ET.SubElement(technical, "string").text = str(int(noteObject.string) + 1)
-                    fret = ET.SubElement(technical, "fret").text = noteObject.fret
+                    string = ET.SubElement(technical, "string").text = str(
+                        int(noteObject.string) + 1)
+                    fret = ET.SubElement(
+                        technical, "fret").text = noteObject.fret
 
+############################################################################################################################
 
 
 
@@ -465,9 +485,13 @@ def xmlConverter(someFile, nameFile, timeSig):
         # print noteArrayMaker(transpose_list)[0][note].getType()
     startProgram(transpose_list)
 
-    xmlstr = minidom.parseString(ET.tostring(score_partwise)).toprettyxml(indent="   ")
+    xmlstr = minidom.parseString(ET.tostring(
+        score_partwise)).toprettyxml(indent="   ")
 
-    tree.write(nameFile)
+    tree.write("output.xml")
 
-    with open(nameFile, "w") as f:
+    with open("output.xml", "w") as f:
         f.write(xmlstr)
+f = open("demofile.txt", "r")
+print(f.read())
+#xmlConverter(f, "", 4)

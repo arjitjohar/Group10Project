@@ -115,6 +115,7 @@ while True:
             timesig = values["-LIST-"]
             
             completeName = os.path.join(save_path, file_name+".musicxml")
+            #############the connection to the conversion engine
             CE.xmlConverter(filename,completeName, timesig)
             bigPoop = open(completeName, "r")
             window["-TOUT-"].update(bigPoop.read())

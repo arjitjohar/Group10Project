@@ -141,7 +141,7 @@ file_list_column = [
 image_viewer_column = [
     #[sg.Text("Choose a tablature from list on left:")],
     [sg.Text(size=(60,2), text = "auto-detected type of music tab: ", text_color = "pink", key="-userTodo-")],
-    [sg.Multiline(size=(60, 30), key="-TOUT-")],
+    [sg.Multiline(size=(75, 40), key="-TOUT-", font=("courier",10))],
     [sg.Image(key="-IMAGE-")],
     [sg.Text(size=(60,2), text = "", text_color = "pink", key="-error-")],
 

@@ -95,15 +95,27 @@ def isUnrecognizedCharacter(tab):
         return problem
 
       
-    def isDrums(text):    #MOVED FROM CONVERSION ENGINE - WORK IN PROGRESS - 1=Guitar, 2=Bass, 3=Drums
+    def AutoEngineConfigurator(text):    #MOVED FROM CONVERSION ENGINE - WORK IN PROGRESS - 1=Guitar, 2=Bass, 3=Drums
         finaltype = 1
-      #  isdrumscounter = 0
-       # for i in text:
-        #    if text(i[0]) != "|" and text(i[1]) != "|" and text(i[3]) == "|":
-     #           isdrumscounter ++
-      #  if isdrumscounter == text.length():
-     #       drums = True
+
+        isdrumscounter = 0  #DRUMS
+        for i in text:
+            if text(i[0]) != "|" and text(i[1]) != "|" and text(i[2]) == "|":
+                isdrumscounter ++
+        if isdrumscounter == text.length():
+            finaltype = 3
+            return finaltype
+
+        isbasscounter = 0  #DRUMS
+        for i in text:
+            if text(i[0]) != "|"and text(i[1]) == "|":
+                isbasscounter ++
+        if isbasscounter == text.length():
+            finaltype = 2
+            return finaltype
         
+        
+
         return finaltype
 
 varTimeSig = ["1/4", "2/4", "3/4", "4/4"]

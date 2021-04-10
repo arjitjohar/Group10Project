@@ -235,26 +235,24 @@ while True:
             elif isUnrecognizedCharacter(txt):
                 window["-error-"].update("theres unregognized characters")
             else:
-                bwindow["-userTodo-"].update("auto-detected type of music tab:  ")
 
-                window["-error-"].update("")
-                numpy_array = np.array(textarr)
-                transpose = numpy_array.T
-                transpose_list = transpose.tolist()
-                    
+                #try:
+                    window["-userTodo-"].update("auto-detected type of music tab:  ")
 
-                CE.xmlConverter(text,completeName,file_name, timesig)
-                bigPoop = open(completeName, "r")
-                window["-TOUT-"].update(bigPoop.read())
-                window["-userTodo-"].update("Todo: Select another tablature text file and if needed, change the tablature directory")
+                    window["-error-"].update("")
+                    numpy_array = np.array(textarr)
+                    transpose = numpy_array.T
+                    transpose_list = transpose.tolist()
+                        
+
+                    CE.xmlConverter(text,completeName,file_name, timesig)
+                    bigPoop = open(completeName, "r")
+                    window["-TOUT-"].update(bigPoop.read())
+                    window["-userTodo-"].update("Todo: Select another tablature text file and if needed, change the tablature directory")
             
+                #except:
+                   # sg.popup("please specify the timeig of the piece")
 
-
-  
-
-                
-
-                
                 # file1 = open(completeName, "w")
                 # file1.write("")
                 # file1.close()

@@ -3,6 +3,7 @@
 import PySimpleGUI as sg
 import os.path
 import conversionEngine as CE
+import drumEngine as DE
 import shutil
 import string
 import numpy as np
@@ -11,7 +12,7 @@ import numpy as np
 
 
 
-
+prevFileConverted = ""
 
 def isAllStringsSameLength(tab):
   same = True
@@ -130,6 +131,9 @@ file_list_column = [
     [
         sg.Button("convert")
     ],
+    [
+        sg.Button("switch")
+    ],
 
     #[sg.Text(size=(40,1), text = "Error: none", key="-errorCheck-")],
 
@@ -204,6 +208,7 @@ while True:
             file_name = values["-pieceName-"]
             timesig = values["-LIST-"]
             text = values["-TOUT-"]
+            prevFileConverted = text
             
             
             completeName = os.path.join(save_path, file_name+".musicxml")
@@ -221,6 +226,8 @@ while True:
             else: 
                 #test if its a valid tab
                 txt = text.split() # txt is array for file, text is string of file
+
+
 
                 textarr = []
                 for t in txt:
@@ -244,8 +251,8 @@ while True:
                     transpose = numpy_array.T
                     transpose_list = transpose.tolist()
                         
-
-                    CE.xmlConverter(text,completeName,file_name, timesig)
+########################################################################## there has been a change from ce to de
+                    DE.xmlConverter(text,completeName,file_name, timesig)
                     bigPoop = open(completeName, "r")
                     window["-TOUT-"].update(bigPoop.read())
                     window["-userTodo-"].update("Todo: Select another tablature text file and if needed, change the tablature directory")
@@ -256,7 +263,9 @@ while True:
                 # file1 = open(completeName, "w")
                 # file1.write("")
                 # file1.close()
-            
+    elif event == "switch" :
+        window["-TOUT-"].update(prevFileConverted)
+        
 
             
         

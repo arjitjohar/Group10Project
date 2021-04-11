@@ -117,7 +117,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
             note.setTypeOfNote(typeOfNotes[1])  # eight
             note.setDuration(1)
         elif whatType <= 1.3:
-            note.setTypeOfNote(typeOfNotes[2])  # quarter
+            note.setTypeOfNote([2])  # quarter
             note.setDuration(2)
         elif whatType <= 2.3:
             note.setTypeOfNote(typeOfNotes[3])  # half
@@ -233,8 +233,8 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         return switcher.get(_string)[fret]
 
 
-    def isChord(fret):
-        if len(set(fret)) > 2:
+    def isChord(beat, string):
+        if len(set(transpose_list[beat])) > 2 and transpose_list[string][slice(0,string,1)]:
             return True
         else:
             return False

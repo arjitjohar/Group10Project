@@ -122,7 +122,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
     def chordHandler():
         return None
 
-    def instrumentIdentifier(ID1, ID2, whichLine):
+    def instrumentIdentifier(ID1, ID2):
         if (ID1 + ID2) == "CC":
             instrumentSet[whichLine] = "P1-I50"
         elif (ID1 + ID2) == "HH":
@@ -153,14 +153,78 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
     def isChord(beat, string):
         accepted_characters = ["x","o","f", "X", "O", "F"]
 
-        contained = [a in transpose_list[string][slice(0,string,1)] for a in accepted_characters]
-        print(transpose_list[string][slice(0,string,1)])
-
+        contained = [a in transpose_list[beat][slice(0,string,1)] for a in accepted_characters]
+        
         if True in contained:
             return True
         else:
             return False
+
+    print(timeSig)
+    print(timeSig[0])
+    print(timeSig[0][0])
+    
+
             
+        
+
+    def measureNum(beat, string):
+
+        
+        behind = numpy_array[string][slice(0,beat,1)]
+        
+        barsBehind = 0
+
+        for x in behind:
+            if x == "|":
+                barsBehind+=1
+        return barsBehind
+
+    def howManyCharactersBetween2Pipes():
+        characterInMeasure = 0
+        
+        firstBar = False   
+        measureStarted = False
+        for t in transpose_list:
+            
+            if len(set(t)) == 1 and t[0] == "|" and firstBar == False:
+                firstBar = True
+                measureStarted = True
+            elif len(set(t)) == 1 and t[0] == "|" and firstBar == True:
+                break
+            else: 
+                if measureStarted == True:
+                    characterInMeasure += 1
+
+                
+        return characterInMeasure
+        
+
+
+
+    print(howManyCharactersBetween2Pipes())
+
+    
+    
+    def noteTypeCalculator(division, duration):
+        nums1 = float(timeSig[0][0]) / float(division)
+        nums = nums1 * float(duration)
+        answer = ""
+        if nums == 1:            
+            answer = "whole"
+        elif nums == 0.5:
+            answer = "half"
+        elif nums == 0.25:
+            answer = "quarter"
+        elif nums == 0.125:
+            answer = "eighth"
+        elif nums == 0.062:
+            answer = "16th"
+        elif nums == 0.03125:
+            answer = "32nd"
+        elif nums == 0.015625:
+            answer = "64th"
+        return answer
         
 
 
@@ -195,6 +259,10 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         duration: int
         isFlam: bool
         ifChord: bool
+        whatMeasure: int
+        instruemntID: str
+        noteType: str
+        
 
         # stemDirection: int
         # inMeasure: int
@@ -210,20 +278,18 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
       for col in arr: 
           col_indx = col_indx + 1
           row_indx = 0
-          for row in col:  
-            if row in accepted_characters:     
+          for row in col: 
+            if row in accepted_characters: 
+
                 
-
-
-
-                print(str(row) == "f")
-
                 if (str(row) == "f"): # will tests if we find a flam
-                    noteArrayStruct.append(NoteStruct(str(row), str(col_indx), str(row_indx + 1), duration(col_indx), True, True))
-                else: 
-                    noteArrayStruct.append(NoteStruct(str(row), str(col_indx), str(row_indx + 1), duration(col_indx), False, isChord(col_indx - 1, row_indx)))
+                    noteArrayStruct.append(NoteStruct(str(row), str(col_indx), str(row_indx + 1), duration(col_indx), True, False, measureNum(col_indx - 1, row_indx), "","", noteTypeCalculator(print(howManyCharactersBetween2Pipes()/int(timeSig[0][0])), duration(col_indx))))
+                    noteArrayStruct.append(NoteStruct(str(row), str(col_indx), str(row_indx + 1), duration(col_indx), True, True, measureNum(col_indx - 1, row_indx), "","", noteTypeCalculator(print(howManyCharactersBetween2Pipes()/int(timeSig[0][0])), duration(col_indx))))
                     print(noteArrayStruct)
-                print("did it")
+                else: 
+                    print(col_indx)
+                    noteArrayStruct.append(NoteStruct(str(row), str(col_indx), str(row_indx + 1), duration(col_indx), False, isChord(col_indx - 1, row_indx), measureNum(col_indx - 1, row_indx), "","", noteTypeCalculator(print(howManyCharactersBetween2Pipes()/int(timeSig[0][0])), duration(col_indx))))
+                    print(noteArrayStruct)
             row_indx = row_indx + 1
             
               

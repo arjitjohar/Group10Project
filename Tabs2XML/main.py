@@ -266,6 +266,7 @@ while True:
     elif event == "switch" :
         window["-TOUT-"].update(prevFileConverted)
         
+        
 
             
         

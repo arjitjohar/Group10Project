@@ -371,6 +371,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         lengthOfMeasure = 0
         currentPos = 0
         measureObj = Measure()
+        isitgrace = False
 
         for idx, vertLine in enumerate(tra_list):
             currentPos += 1
@@ -411,12 +412,13 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
                     if isNum(char):
                         if isNum(tra_list[idx + 1][ntidx]):
                             string = char + tra_list[idx + 1][ntidx]
-                            # print string
+                        # print string
                             tra_list[idx + 1][ntidx] = '-'
                         tempNote = Note(noteFun(ntidx, string), whatOctave(ntidx, string))
                         tempNote.setString(ntidx)
                         tempNote.setFret(string)
                         tempNote.position = currentPos
+                        
                         # == THESE ARE FOR PULL AND HAMMER ENDING ==
                         if tra_list[idx - 1][ntidx] == 'h':
                             tempNote.hstop = True
@@ -437,6 +439,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
                             if note.string == ntidx:
                                 note.pstart = True
                                 break
+                    
                     # == ENDING FOR HAMMER AND PULL BEGINNING DETECTION ==
                     else:
                         pass
@@ -450,12 +453,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
             meas.timeSig = timeSig
         return measures
 
-    result = noteArrayMaker(transpose_list, "4/4")
-    for measure in result:
-        for note in measure.notes:
-            # print note.letter
-            pass
-    # print result[0].notes[3].pstop
+ 
 
     def changeMeasureTimeSig(measures, measureNumb, timeSig):
         measureToBeChanged = measures[measureNumb - 1]
@@ -510,7 +508,8 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
 
                 note = ET.SubElement(measure, "note")
                 # print noteObject.position, 'curr pos'
-
+                # if noteObject.grace == True:
+                    # ET.SubElement(note, "grace")
                 if noteObject.position == meas.notes[idx - 1].position:
                     if len(meas.notes) != 1 and idx != 0:
                         chord = ET.SubElement(note, "chord")
@@ -538,6 +537,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
 
 
                 string = ET.SubElement(technical, "string").text = str(int(noteObject.string) + 1)
+                print(noteObject.fret, 'fret is this one')
                 fret = ET.SubElement(technical, "fret").text = str(noteObject.fret)
 
                 if noteObject.slurAmount == 1 and (noteObject.hstart or noteObject.pstart):
@@ -568,6 +568,3 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
 
     with open(nameFile, "w") as f:
         f.write(xmlstr)
-
-
-

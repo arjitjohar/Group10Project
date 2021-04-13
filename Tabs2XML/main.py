@@ -98,6 +98,7 @@ def isUnrecognizedCharacter(tab):
 
 
 varTimeSig = ["1/4", "2/4", "3/4", "4/4"]
+varINS = ["Guitar", "Bass Guitar", "Drums"]
 
 file_list_column = [
     [
@@ -119,6 +120,12 @@ file_list_column = [
     [
         sg.Text("Select time signature of piece"),
         sg.Listbox(varTimeSig, default_values = varTimeSig[3], size=(5,4), key='-LIST-'),
+        
+        
+    ],
+    [
+        sg.Text("select the Instrument for conversion"),
+        sg.Listbox(varINS, default_values = varTimeSig[1], size=(11,4), key='-LISTOFINS-'),
         
         
     ],

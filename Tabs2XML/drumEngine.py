@@ -83,8 +83,6 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
 
 
 
-        return None
-
     def noteStructArrayHandler():
         return None
 
@@ -167,10 +165,6 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
             return True
         else:
             return False
-
-    print(timeSig)
-    print(timeSig[0])
-    print(timeSig[0][0])
     
 
             
@@ -214,21 +208,26 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
     
     def noteTypeCalculator(division, duration):
         nums1 = float(timeSig[0][0]) / float(division)
-        nums = nums1 * float(duration)
+        nums = float(1/(nums1 * float(duration)))
+
+
+        print(nums)
+
+
         answer = ""
-        if nums == 1:            
+        if nums == float(1)/float(1):            
             answer = "whole"
-        elif nums == 0.5:
+        elif nums == float(1)/float(2):
             answer = "half"
-        elif nums == 0.25:
+        elif nums == float(1)/float(4):
             answer = "quarter"
-        elif nums == 0.125:
+        elif nums == float(1)/float(8):
             answer = "eighth"
-        elif nums == 0.062:
+        elif nums == float(1)/float(16):
             answer = "16th"
-        elif nums == 0.03125:
+        elif nums == float(1)/float(32):
             answer = "32nd"
-        elif nums == 0.015625:
+        elif nums == float(1)/float(64):
             answer = "64th"
         else:
             answer = "quarter"
@@ -302,6 +301,33 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         return len(transpose_list[0])
 
 
+    def createNoteXML(x):
+        PrevMeasure = 1
+        measure_tag = ET.SubElement(measure_tag, "measure", id=str(0))
+        for i in x:
+            if i.whatMeasure != PrevMeasure:
+                PrevMeasure = i.whatMeasure
+
+            measure_tag = ET.SubElement(part, "measure", id=str(PrevMeasure))
+            note_tag = ET.SubElement(measure_tag, "note")
+            if i.ifChord:
+             chord_tag = ET.SubElement(note_tag, "chord")
+            
+            unpitched_tag = ET.SubElement(note_tag, "upitched")
+            display_step = ET.SubElement(unpitched_tag, "display-step").text = str(i.step)
+            display_octave = ET.SubElement(unpitched_tag, "display-octave").text = str(i.octave)
+            duration_tag = ET.SubElement(note_tag, "duration").text = str(i.duration)
+            instrument_tag = ET.SubElement(note_tag, "intrument", id= str(i.instruemntID))
+            voice_tag = ET.SubElement(note_tag, "voice").text = "1"
+            type_tag = ET.SubElement(note_tag, "type").text = str(i.noteType)
+            stem_tag = ET.SubElement(note_tag, "steam").text = str(i.stemDirection)
+            notehead_tag = ET.SubElement(note_tag, "notehead").text = str(i.noteHead)
+            beam_tag = ET.SubElement(note_tag, "beam")
+
+          
+        
+
+
     
 
 
@@ -311,18 +337,69 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         
 
                 
-
-
     score_partwise = ET.Element("score-partwise", version="3.1")
     part_list = ET.SubElement(score_partwise, "part-list")
+        score_part = ET.SubElement(part_list, "score-part", id="P1")
+            part_name = ET.SubElement(score_part, "part-name").text = "Drumset"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I36")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Bass Drum 1"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I37")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Bass Drum 2"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I38")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Side Stick"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I39")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Snare"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I42")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Low Floor Tom"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I43")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Closed Hi-Hat"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I44")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "High Floor Tom"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I45")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Pedal Hi-Hat"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I46")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Low Tom"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I47")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Open Hi-Hat"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I48")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Low-Mid Tom"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I49")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Hi-Mid Tom"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I50")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Crash Cymbal 1"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I51")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "High Tom"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I52")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Ride Cymbal 1"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I53")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Chinese Cymbal"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I54")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Ride Bell"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I55")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Tambourine"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I56")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Splash Cymbal"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I57")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Cowbell"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I58")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Crash Cymbal 2"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I60")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Ride Cymbal 2"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I64")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Open Hi Conga"
+            score_instrument = ET.SubElement(score_part, "score-instrument", id="P1-I65")
+                instrument_name = ET.SubElement(score_instrument, "instrument-name").text = "Low Conga"
+    part_single = ET.SubElement(score_partwise, "part", id="P1")
+        measure_number = ET.SubElement(part_single, "measure number="1"")
+            attributes_single = ET.SubElement(measure_number, "attributes")
+                divisions_single = ET.SubElement(attributes_single, "divisions").text = "4"
+                key_single = ET.SubElement(attributes_single, "key")
+                    fifths_single = ET.SubElement(key_single, "fifths").text = "0"
+                time_single = ET.SubElement(attributes_single, "time")
 
-    score_part = ET.SubElement(part_list, "score-part", id="P1")
+part = ET.SubElement(score_partwise, "part", id="P1")   
 
-    part_name = ET.SubElement(score_part, "part-name").text = piece_name  # input part name here from user
-
-    part = ET.SubElement(score_partwise, "part", id="P1")
-
-    tree = ET.ElementTree(score_partwise)
+tree = ET.ElementTree(score_partwise)
 
 
         # place notes
@@ -371,71 +448,32 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
                 #_isFlam = MANUALLY SET FOR EACH
                 #_ifChord = MANUALLY SET FOR EACH
                 _whatMeasure = measureNum(col_indx - 1, row_indx)
-                _instruemntID = instrumentIdentifier(transpose_list[0][0], transpose_list[1][0])
+                _instruemntID = instrumentIdentifier(transpose_list[0][row_indx], transpose_list[1][row_indx])
                 _noteType = noteTypeCalculator(((howManyCharactersBetween2Pipes())/(int(timeSig[0][0]))), _duration)
                 _octave = octaveCalculator(_instruemntID)
                 _step = stepCalculator(_instruemntID)
-                _stemDirection = stemDirectionDictator(howManyStrings(), row_indx + 1)
-
-
-
-
-
-                
+                _stemDirection = stemDirectionDictator(howManyStrings(), row_indx + 1)                
                
                 if (str(row) == "f"): # will tests if we find a flam
                     noteArrayStruct.append(NoteStruct(_noteHead, _colPos, _string, _duration, True, False, _whatMeasure, _instruemntID, _noteType, _octave, _step, _stemDirection))
                     noteArrayStruct.append(NoteStruct(_noteHead, _colPos, _string, _duration, True, True, _whatMeasure, _instruemntID, _noteType, _octave, _step, _stemDirection))
+                    
                    
                 else:                    
-                    noteArrayStruct.append(NoteStruct(_noteHead, _colPos, _string, _duration, False, isChord(col_indx - 1, row_indx), _whatMeasure, _instruemntID, _noteType, _octave, _step, _stemDirection))
-
+                    noteArrayStruct.append(NoteStruct(_noteHead, _colPos, _string, _duration, False, isChord(col_indx - 1, row_indx), _whatMeasure, _instruemntID, _noteType, _octave, _step, _stemDirection))           
                 
-                    
             row_indx = row_indx + 1
-            
+      createNoteXML(noteArrayStruct)
+
+
     
-    for i in noteArrayStruct:
-        measure = ET.SubElement(part, "measure", number=1)
-        note = ET.SubElement(measure, "note")
-        unpitched = ET.SubElement(measure, "upitched")
-        display_step = ET.SubElement(unpitched, "display-step").text = str(i.step)
-        display_octave = ET.SubElement(unpitched, "display-octave").text = str(i.octave)
-        duration_tag = ET.SubElement(note, "duration").text = str(i.duration)
-        instrument_tag = ET.SubElement(note, "intrument", id= str(i.instruemntID))
-        voice_tag = ET.SubElement(note, "voice").text = "1"
-        type_tag = ET.SubElement(note, "type").text = str(i.noteType)
-        stem_tag = ET.SubElement(note, "steam").text = str(i.stemDirection)
-        notehead_tag = ET.SubElement(note, "notehead").text = str(i.noteHead)
-        #beam_tag = ET.SubElement(note, "beam")
-        
+
+
+   
 
 
 
     startProgram(transpose_list)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     xmlstr = minidom.parseString(ET.tostring(score_partwise)).toprettyxml(indent="   ")

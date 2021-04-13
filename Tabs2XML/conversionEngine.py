@@ -3,7 +3,7 @@ import lxml.etree as etree
 import numpy as np
 from xml.dom import minidom
 from itertools import cycle
-
+# grace doesnt work but everything else does -ALP
 
 
 def xmlConverter(someFile, nameFile, piece_name, timeSig):

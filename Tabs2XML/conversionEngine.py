@@ -317,7 +317,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
 
         if amountOfEight <= 0.65:
             note.typeOfNote = typeOfNotes[0]
-            note.duration = "0.5"
+            note.duration = "1"
         elif amountOfEight <= 1.25:
             note.typeOfNote = typeOfNotes[1]
             note.duration = "1"

@@ -5,8 +5,19 @@ from xml.dom import minidom
 from itertools import cycle
 
 
-    # =======CLASSES TO USE LATER=============
+
 def xmlConverter(someFile, nameFile, piece_name, timeSig):
+    
+    timeSig = timeSig[0]
+    def isAlter(alterednote):
+        arrOfAlter = ['F#', 'G#', 'A#', 'C#', 'D#']
+        arrOfNonAlter = ['F', 'G', 'A', 'C', 'D']
+        if alterednote in arrOfAlter:
+            return arrOfNonAlter[arrOfAlter.index(alterednote)]
+        else:
+            return False
+    # =======CLASSES TO USE LATER=============
+
     class Note:
         letter = ''
         Octave = ''
@@ -17,10 +28,22 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         fret = ''
         voice = '1'
         grace = False
+        position = 0
+        hstart = False
+        hstop = False
+        pstart = False
+        pstop = False
+        isitslur = False
+        slurAmount = 0
+
 
 
         def __init__(self, letter, Octave):
-            self.letter = letter
+            if isAlter(letter):
+                self.letter = isAlter(letter)
+                self.alter = '1'
+            else:
+                self.letter = letter
             self.Octave = Octave
 
         def setDuration(self, duration):
@@ -53,11 +76,22 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         def isGrace(self):
             return self.grace
 
+        def countSlurs(self):
+            if self.hstart:
+                self.slurAmount += 1
+            if self.hstop:
+                self.slurAmount += 1
+            if self.pstart:
+                self.slurAmount += 1
+            if self.pstop:
+                self.slurAmount += 1
+
 
 
 
     def whatOctave(string, fret):
         tempoctave = 0
+        fret = int(fret)
 
         if string == 5:
             if fret <= 7:  # indexed E = 0 and b = 7 for me -alp: kalin e teli bu
@@ -99,84 +133,12 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         # print(tempoctave)
         return str(tempoctave)
 
-    # function for type calculation and selection gonna do something later
-    def totalTime(timeSelection):
-        if timeSelection == '4/4':
-            return 4
-        elif timeSelection == '3/4':
-            return 3
-
-    # ======== GONNA CHANGE IT LATER
-    def noteTypeHelper(note, whatType):
-        typeOfNotes = ["16th", "eighth", "quarter", "half", "whole"]
-
-        if whatType <= 0.3:
-            note.setTypeOfNote(typeOfNotes[0])
-            note.setDuration("0.5")# 1th
-        elif whatType <= 0.6:
-            note.setTypeOfNote(typeOfNotes[1])  # eight
-            note.setDuration(1)
-        elif whatType <= 1.3:
-            note.setTypeOfNote([2])  # quarter
-            note.setDuration(2)
-        elif whatType <= 2.3:
-            note.setTypeOfNote(typeOfNotes[3])  # half
-            note.setDuration(4)
-        elif whatType <= 4:
-            note.setTypeOfNote(typeOfNotes[4])  # whole
-            note.setDuration(8)
 
 
 
-    def noteTypeCalculator(arrOfNotes, lengthOfBar, timesignature):
-        # trying something out here with the length
-        tempLength = lengthOfBar - 1
-        totalQuarterNoteTime = totalTime("4/4")
-        #  Arjit can u link this up to the time signature selection.
-        # it should be as follows
-        # totalQuarterNoteTime = totalTime(timesignature)
 
-        for j in range(0, len(arrOfNotes)):
-            # it takes 4 quarter notes to play
-
-            if arrOfNotes[j] != 'measure':
-                notePosition = arrOfNotes[j][1]
-                note = arrOfNotes[j][0]
-                if note.grace:
-                    pass
-                else:
-                    nextNotePosition = -1
-
-                    if j != len(arrOfNotes) - 2:
-                        if arrOfNotes[j + 1] == 'measure':
-                            nextNotePosition = arrOfNotes[j + 2][1]
-                        else:
-                            nextNotePosition = arrOfNotes[j + 1][1]
-
-                        if nextNotePosition <= notePosition:
-                            nextNotePosition = lengthOfBar
-
-                # if there are no notes until the next | which resets the numbers
-                    else:
-                        nextNotePosition = lengthOfBar
-                # variables are set for comparison
-                # print nextNotePosition, 'next note'
-                # print notePosition, 'not position 2'
-                    difference = (nextNotePosition - notePosition)
-                    how_much_ratio = float(difference) / tempLength
-                    whatType = how_much_ratio * totalQuarterNoteTime
-                    if len(arrOfNotes[j]) > 2:
-                    # later idea below
-                    # for i in range(0, len(arrOfNotes[j]) - 1, 2):
-                    # min = whatType
-                        for i in range(0, len(arrOfNotes[j]),
-                                2):  # need to increment by 2 for chords because i am sleepy and i fucked up
-                            noteTypeHelper(arrOfNotes[j][i], whatType)
-                    else:
-                        noteTypeHelper(note, whatType)
-
-
-    text=someFile.split()
+    
+    text = someFile.split()
     textarr = []
 
 
@@ -216,25 +178,31 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
 
     ##function gets the name of the note that was played
     def noteFun(_string, fret):
+        fret = int(fret)
         enote = ["F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E"]
 
         enote = ["F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E"]
+        if fret >= 12:
+            fret_use = fret - 12
+        else:
+            fret_use = fret
 
         switcher = {  # default tuning mapping based of string.
-            0: ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E"],
-            1: ["B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"],
-            2: ["G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G"],
-            3: ["D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D"],
-            4: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A"],
-            5: ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E"],
+            0: ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#"],
+            1: ["B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#"],
+            2: ["G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#"],
+            3: ["D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#"],
+            4: ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"],
+            5: ["E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#"],
         }
 
 
-        return switcher.get(_string)[fret]
+        return switcher.get(_string)[fret_use]
 
 
-    def isChord(beat, string):
-        if len(set(transpose_list[beat])) > 2 and transpose_list[string][slice(0,string,1)]:
+
+    def isChord(fret):
+        if len(set(fret)) > 2:
             return True
         else:
             return False
@@ -268,13 +236,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         return Note(letter, octave)
 
 
-    def isAlter(alterednote):
-        arrOfAlter = ['F#', 'G#', 'A#', 'C#', 'D#']
-        arrOfNonAlter = ['F', 'G', 'A', 'C', 'D']
-        if alterednote in arrOfAlter:
-            return arrOfNonAlter[arrOfAlter.index(alterednote)]
-        else:
-            return False
+
 
     # function that takes one line until the '|' and sets everything for that line only, call a for loop later
     def isLetter(string):
@@ -283,199 +245,329 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         else:
             return True
 
-    def noteArrayMaker(tra_list):
-        notesAndChords = []
-        position = -1
-        length = 0
-        barNumber = -1
-        for idx, vertLine in enumerate(tra_list):
-            if idx == len(tra_list) - 1:
-                notesAndChords.append('measure')
-                barNumber += 1
-            else:
-                if vertLine[1] != '|':
-                    position += 1
-                    length += 1
+
+    class Measure:
+        notes = []
+        repeates = 1
+        measureLineLength = 0
+        timeSig = ""
+        changed = False
+
+        def __init__(self):
+            pass
+
+        def setRepeats(self, repeats):
+            self.repeates = repeats
+
+        def addNotes(self, notes):
+            self.notes = notes
+
+        def chordType(self):
+            # print self.notes
+            if self.notes[0].typeOfNote == '':
+                for idx, note in enumerate(self.notes):
+                    if note.typeOfNote != '':
+                        default = note.typeOfNote
+                        defaultDur = note.duration
+                        break
+                for i in range(0, idx):
+                    self.notes[i].typeOfNote = default
+                    self.notes[i].duration = defaultDur
+
+            for index, nt in enumerate(self.notes):
+                if nt.typeOfNote == '':
+                    tempi = index
+                    beggining = index
+                    while(self.notes[tempi].typeOfNote == ''):
+                        tempi += 1
+                    for j in range(beggining, tempi):
+                        self.notes[j].typeOfNote = self.notes[tempi].typeOfNote
+                        self.notes[j].duration = self.notes[tempi].duration
+
+        def doLastThing(self):
+            for note in self.notes:
+                if note.hstart or note.hstop or note.pstart or note.pstop:
+                    note.isitslur = True
+                note.countSlurs()
+
+
+
+
+
+
+    def MeasureNoteTypeHelper(note, ratio, timeSig):
+        typeOfNotes = ["16th", "eighth", "quarter", "half", "whole"]
+        total = 8
+
+        if timeSig == "4/4":
+            total = 8
+        elif timeSig == "3/4":
+            total = 6
+        elif timeSig == "3/8":
+            total = 3
+        elif timeSig == "2/4":
+            total = 4
+        elif timeSig == "2/2":
+            total = 8
+        elif timeSig == "5/4":
+            total = 10
+
+        amountOfEight = float(total * ratio)
+        # print float(total * ratio)
+
+        if amountOfEight <= 0.65:
+            note.typeOfNote = typeOfNotes[0]
+            note.duration = "0.5"
+        elif amountOfEight <= 1.25:
+            note.typeOfNote = typeOfNotes[1]
+            note.duration = "1"
+        elif amountOfEight <= 2.5:
+            note.typeOfNote = typeOfNotes[2]
+            note.duration = "2"
+        elif amountOfEight <= 5:
+            note.typeOfNote = typeOfNotes[3]
+            note.duration = "4"
+        elif amountOfEight <= 7.9:
+            note.typeOfNote = typeOfNotes[4]
+            note.duration = "8"
+
+
+
+    # ==The new type calculator
+    def MeasureTypeCalculator(timeSig, measureList):
+        for measure in measureList:
+            #  if position can not be assigned == 0 then leave it for later, if positions are the same,assign it later
+            for idx, note in enumerate(measure.notes):
+
+                notePosition = note.position
+                if idx == len(measure.notes) - 1:
+                    NextNotePosition = measure.measureLineLength
                 else:
-                    barNumber += 1
-                    position = -1
-                    notesAndChords.append('measure')
-                tempList = []
-
-                # the list of chars are tralist [[][][][][]]
-                for i in range(0, len(vertLine)):
-                    isItLetters = False
-                    isGrace = False
-                    string = vertLine[i]
-                    backString = tra_list[idx - 1][i]
-                    if isNum(string):
-                        nextString = tra_list[idx + 1][i]
-                        nextNextString = tra_list[idx + 2][i]
-
-                        if isNum(backString):
-                            pass
-                        else:
-                            if isLetter(backString):
-                                if backString == 'g':
-                                    isGrace = True
-
-                            if isNum(nextString):
-                                string = string + nextString
-
-                            if not isAlter(noteFun(i, int(string))):
-                                tempNote = makeNote(noteFun(i, int(string)), whatOctave(i, int(string)))
-                            # print tempNote.letter
-                                tempNote.setString(i)
-                                tempNote.setFret(string)
-                                tempList.append(tempNote)
-                                if isGrace:
-                                    tempNote.grace = True
-                            else:
-                                # makes a note with the parameter type (the letter) and the octave of that note which are set
-                                tempNote = makeNote(isAlter(noteFun(i, int(string))), whatOctave(i, int(string)))
-                                tempNote.setAlter()
-                                tempNote.setString(i)
-                                tempNote.setFret(int(string))
-                                tempList.append(tempNote)
-                                if isGrace:
-                                    tempNote.grace = True
-                            tempList.append(position)
+                    NextNotePosition = measure.notes[idx + 1].position
 
 
-                if len(tempList) >= 1:
-                    notesAndChords.append(tempList)
-            # end of first for loop
-        # after all the notes are done the second for loop
+
+                if NextNotePosition - notePosition == 0:
+                    pass
+                else:
+                    diff = NextNotePosition - notePosition
+                    ratio = float(diff) / measure.measureLineLength
+                    # print ratio, 'ratio  ', note.fret, 'fret'
+                    MeasureNoteTypeHelper(note, ratio, timeSig)
+                pass
 
 
-        noteTypeCalculator(notesAndChords, length / barNumber, "4/4")
-        return notesAndChords
 
+
+                # if in fact the note itself has 0, that means its part of the chord so make
+                # the note before and after part of the chord
+
+
+
+
+    def noteArrayMaker(tra_list, timeSig):
+        isItRepeatTime = False
+        measures = []  #  all the measures are gonna be stored here
+        lengthOfMeasure = 0
+        currentPos = 0
+        measureObj = Measure()
+
+        for idx, vertLine in enumerate(tra_list):
+            currentPos += 1
+            lengthOfMeasure += 1
+
+            #  this part handles if it is a repeated measure below
+            if isItRepeatTime:
+                isItRepeatTime = False
+                lengthOfMeasure -= 1
+            elif idx == len(tra_list) - 1:  # in case it is the very last character
+                measureObj.measureLineLength = lengthOfMeasure
+                measures.append(measureObj)
+                pass
+            elif tra_list[idx][0] == '|' and tra_list[idx + 1][0] == '|':
+                lengthOfMeasure -= 1
+                pass
+            else:
+                # main algo starts here before the for loop for measurement reset
+                if tra_list[idx][1] == '|':
+                    tempListOfNotes = []
+                    currentPos = -1
+                    measures.append(measureObj)
+                    measureObj.measureLineLength = lengthOfMeasure
+                    lengthOfMeasure = -1
+
+                    measureObj = Measure()
+            # main algo starts here
+            # ntidx is whichever string it is
+                for ntidx, char in enumerate(vertLine):
+                    # IRRELEVANT TO THE MAIN ALGO, JUST REPEATS AND STUFF
+                    if char == '*':  # this needs to happen at first, doesnt matter later
+                        if tra_list[idx + 1][ntidx] == '|':
+                            isItRepeatTime = True
+                            measureObj.repeates = int(tra_list[idx + 1][0])
+
+                    # this is parser number or pull offs
+                    string = char
+                    if isNum(char):
+                        if isNum(tra_list[idx + 1][ntidx]):
+                            string = char + tra_list[idx + 1][ntidx]
+                            # print string
+                            tra_list[idx + 1][ntidx] = '-'
+                        tempNote = Note(noteFun(ntidx, string), whatOctave(ntidx, string))
+                        tempNote.setString(ntidx)
+                        tempNote.setFret(string)
+                        tempNote.position = currentPos
+                        # == THESE ARE FOR PULL AND HAMMER ENDING ==
+                        if tra_list[idx - 1][ntidx] == 'h':
+                            tempNote.hstop = True
+                        elif tra_list[idx - 1][ntidx] == 'p':
+                            tempNote.pstop = True
+                        # == END OF PULL AND HAMMER ENDS
+                        tempListOfNotes.append(tempNote)
+                        measureObj.notes = tempListOfNotes
+
+                    # == THESE ARE FOR HAMMER AND PULL BEGINNING DETECTION ==
+                    elif char == 'h':
+                        for note in reversed(measureObj.notes):
+                            if note.string == ntidx:
+                                note.hstart = True
+                                break
+                    elif char == 'p':
+                        for note in reversed(measureObj.notes):
+                            if note.string == ntidx:
+                                note.pstart = True
+                                break
+                    # == ENDING FOR HAMMER AND PULL BEGINNING DETECTION ==
+                    else:
+                        pass
+        MeasureTypeCalculator(timeSig, measures)
+
+
+        measures.pop(0)  # stupid algo makes an empty measure so have to do this
+        for meas in measures:
+            meas.chordType()
+            meas.doLastThing()
+            meas.timeSig = timeSig
+        return measures
+
+    result = noteArrayMaker(transpose_list, "4/4")
+    for measure in result:
+        for note in measure.notes:
+            # print note.letter
+            pass
+    # print result[0].notes[3].pstop
+
+    def changeMeasureTimeSig(measures, measureNumb, timeSig):
+        measureToBeChanged = measures[measureNumb - 1]
+        tempMeasureList = [measureToBeChanged]
+        MeasureTypeCalculator(timeSig, measures)
+        measureToBeChanged.changed = True
 
     def startProgram(arr):
 
         m = 1
-        chordPresent = False
-        for idx, lists in enumerate(noteArrayMaker(arr)):
-            if lists == 'measure':
-                if idx != len(noteArrayMaker(arr)) - 1:
-                    measure = ET.SubElement(part, "measure", number=str(m))  # place a measure
-                if m == 1:
-                    attributes = ET.SubElement(measure, "attributes")
-                    divisions = ET.SubElement(attributes, "divisions").text = str(2)
-                    key = ET.SubElement(attributes, "key")
-                    fifths = ET.SubElement(key, "fifths").text = str(0)
-                    t = ET.SubElement(attributes, "time")
-                    if timeSig[0] == "1/4":
-                        _beats = ET.SubElement(t, "beats").text = str(1)
-                        beats_type = ET.SubElement(t, "beats_type").text = str(4)
-                    elif timeSig[0] == "2/4":
-                        _beats = ET.SubElement(t, "beats").text = str(2)
-                        beats_type = ET.SubElement(t, "beats_type").text = str(4)
-                    elif timeSig[0] == "3/4":
-                        _beats = ET.SubElement(t, "beats").text = str(3)
-                        beats_type = ET.SubElement(t, "beats_type").text = str(4)
-                    elif timeSig[0] == "4/4":
-                        _beats = ET.SubElement(t, "beats").text = str(4)
-                        beats_type = ET.SubElement(t, "beats_type").text = str(4)
-                    
-                    clef = ET.SubElement(attributes, "clef")
-                    sign = ET.SubElement(clef, "sign").text = "TAB"
-                    line = ET.SubElement(clef, "line").text = str(5)
-                    staff_details = ET.SubElement(attributes, "staff-details")
-                    staff_lines = ET.SubElement(staff_details, "staff-lines").text = "6"
-                    for i in range(6):
-                        staff_tuning_line = ET.SubElement(staff_details, "staff-tuning", line="{}".format((i + 1)))
-                        tuning_step = ET.SubElement(staff_tuning_line, "tuning-step").text = numToString(i)
-                        switcher = {  # default tuning mapping based of string.
-                            0: "2",
-                            1: "2",
-                            2: "3",
-                            3: "3",
-                            4: "3",
-                            5: "4",
-                        }
-                        tuning_octave = ET.SubElement(staff_tuning_line, "tuning-octave").text = switcher.get(i)
-                m += 1
-            else:
-                if len(lists) > 2:
-                    for i in range(0, len(lists), 2):
-                        # note definition for chords
-                        noteObject = lists[i]
-                        note = ET.SubElement(measure, "note")
-
-                        # trying the chord thing out
-                        if not chordPresent:
-                            chordPresent = True
-                        else:
-                            chord = ET.SubElement(note, "chord")
-                        pitch = ET.SubElement(note, "pitch")
-                        step = ET.SubElement(pitch, "step").text = noteObject.letter
-                        if noteObject.alter != 'not_altered':
-                            alter = ET.SubElement(pitch, "alter").text = noteObject.alter
-                        octave = ET.SubElement(pitch, "octave").text = noteObject.Octave
-                        ET.SubElement(note, "duration").text = noteObject.duration
-                        voice = ET.SubElement(note, "voice").text = noteObject.voice
-                        type = ET.SubElement(note, "type").text = noteObject.typeOfNote
-                        notations = ET.SubElement(note, "notations")
-                        technical = ET.SubElement(notations, "technical")
-                        string = ET.SubElement(technical, "string").text = str(int(noteObject.string) + 1)
-                        fret = ET.SubElement(technical, "fret").text = str(noteObject.fret)
-                else:
-                    chordPresent = False
-                    noteObject = lists[0]
-                    note = ET.SubElement(measure, "note")
-                    if noteObject.grace:
-                        ET.SubElement(note, "grace")
-                    pitch = ET.SubElement(note, "pitch")
-                    step = ET.SubElement(pitch, "step").text = noteObject.letter
-                    if noteObject.alter != 'not_altered':
-                        alter = ET.SubElement(pitch, "alter").text = noteObject.alter
-                    octave = ET.SubElement(pitch, "octave").text = noteObject.Octave
-                    ET.SubElement(note, "duration").text = noteObject.duration
-                    voice = ET.SubElement(note, "voice").text = noteObject.voice
-                    type = ET.SubElement(note, "type").text = noteObject.typeOfNote
-                    notations = ET.SubElement(note, "notations")
-                    technical = ET.SubElement(notations, "technical")
-                    string = ET.SubElement(technical, "string").text = str(int(noteObject.string) + 1)
-                    fret = ET.SubElement(technical, "fret").text = noteObject.fret
+        for meas in arr:
+            repeat = False
+            s = 1
+            measure = ET.SubElement(part, "measure", number=str(m))  # place a measure
+            if meas.repeates > 1:
+                repeat = True
+                barline = ET.SubElement(measure, "barline", location="left")
+                ET.SubElement(barline, "bar-style").text = "heavy-light"
+                ET.SubElement(barline, "repeat", direction="forward")
+                direction = ET.SubElement(measure, "direction", placement="above")
+                directiontype = ET.SubElement(direction, "direction-type")
+                ET.SubElement(directiontype, "words").text = "Repeat " + str(meas.repeates) + " Times"
+            if m == 1:
+                attributes = ET.SubElement(measure, "attributes")
+                divisions = ET.SubElement(attributes, "divisions").text = str(2)
+                key = ET.SubElement(attributes, "key")
+                fifths = ET.SubElement(key, "fifths").text = str(0)
+                t = ET.SubElement(attributes, "time")
+                # print meas.timeSig
+                _beats = ET.SubElement(t, "beats").text = meas.timeSig[0]
+                beats_type = ET.SubElement(t, "beats_type").text = meas.timeSig[2]
+                clef = ET.SubElement(attributes, "clef")
+                sign = ET.SubElement(clef, "sign").text = "TAB"
+                line = ET.SubElement(clef, "line").text = str(5)
+                staff_details = ET.SubElement(attributes, "staff-details")
+                staff_lines = ET.SubElement(staff_details, "staff-lines").text = "6"
+                for i in range(6):
+                    staff_tuning_line = ET.SubElement(staff_details, "staff-tuning", line="{}".format((i + 1)))
+                    tuning_step = ET.SubElement(staff_tuning_line, "tuning-step").text = numToString(i)
+                    switcher = {  # default tuning mapping based of string.
+                        0: "2",
+                        1: "2",
+                        2: "3",
+                        3: "3",
+                        4: "3",
+                        5: "4",
+                    }
+                    tuning_octave = ET.SubElement(staff_tuning_line, "tuning-octave").text = switcher.get(i)
+            m += 1
+            for idx, noteObject in enumerate(meas.notes):
 
 
+                note = ET.SubElement(measure, "note")
+                # print noteObject.position, 'curr pos'
+
+                if noteObject.position == meas.notes[idx - 1].position:
+                    if len(meas.notes) != 1 and idx != 0:
+                        chord = ET.SubElement(note, "chord")
+
+                pitch = ET.SubElement(note, "pitch")
+                step = ET.SubElement(pitch, "step").text = noteObject.letter
+                if noteObject.alter != 'not_altered':
+                    alter = ET.SubElement(pitch, "alter").text = noteObject.alter
+                octave = ET.SubElement(pitch, "octave").text = noteObject.Octave
+                ET.SubElement(note, "duration").text = noteObject.duration
+                voice = ET.SubElement(note, "voice").text = noteObject.voice
+                type = ET.SubElement(note, "type").text = noteObject.typeOfNote
+                notations = ET.SubElement(note, "notations")
+                technical = ET.SubElement(notations, "technical")
 
 
+                if noteObject.hstop:
+                    hammeroff = ET.SubElement(technical, "hammer-on", number=str(s), type="stop")
+                if noteObject.pstop:
+                    hammeroff = ET.SubElement(technical, "pull-off", number=str(s), type="stop")
+                if noteObject.hstart:
+                    hammeron = ET.SubElement(technical, "hammer-on", number=str(s), type="start").text = "H"
+                if noteObject.pstart:
+                    hammeron = ET.SubElement(technical, "pull-off", number=str(s), type="start").text = "P"
 
 
-    # methods for object to xml
-    # for note in range(0, len(noteArrayMaker(transpose_list)[0]) - 1, 2):
-        # print noteArrayMaker(transpose_list)[0][note].getType()
-    startProgram(transpose_list)
+                string = ET.SubElement(technical, "string").text = str(int(noteObject.string) + 1)
+                fret = ET.SubElement(technical, "fret").text = str(noteObject.fret)
+
+                if noteObject.slurAmount == 1 and (noteObject.hstart or noteObject.pstart):
+                    slurstart = ET.SubElement(notations, "slur", number=str(s), placement="above", type="start")
+
+                if noteObject.slurAmount == 1 and (noteObject.hstop or noteObject.pstop):
+                    slurstop = ET.SubElement(notations, "slur", number=str(s), type="stop")
+                    s += 1
+
+            if repeat == True:
+                barline = ET.SubElement(measure, "barline", location="right")
+                ET.SubElement(barline, "bar-style").text = "light-heavy"
+                ET.SubElement(barline, "repeat", direction="backward")
+                
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    startProgram(noteArrayMaker(transpose_list, timeSig))
 
 
 
     xmlstr = minidom.parseString(ET.tostring(score_partwise)).toprettyxml(indent="   ")
 
-    
     tree.write(nameFile)
 
     with open(nameFile, "w") as f:
         f.write(xmlstr)
+
+
+

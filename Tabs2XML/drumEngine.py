@@ -142,6 +142,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
             instrumentPartId = "P1-I42"
         else:
             instrumentPartId = "Unrecognized"
+        return instrumentPartId
 
     def duration(fret):  # find the next occurence of a number
         dur = 0
@@ -281,24 +282,20 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
     
     def stemDirectionDictator(numberOfStrings, whichString):
         theResult = ""
-
+        cahcah = int(numberOfStrings/2) + 1
 
         if (numberOfStrings == 1):
             theResult = "up"
         elif (numberOfStrings == 2 and whichString ==1):
             theResult = "up"
         elif (numberOfStrings == 2 and whichString ==2):
-            theResult = "down"
+            theResult = "down"        
+        elif (whichString > cahcah):
+           theResult = "down"
+        elif (whichString <= cahcah):
+           theResult = "up"
 
-
-
-        #cahcah = int(numberOfStrings/2) + 1
-        #elif (whichString > cahcah):
-        #    theResult = "down"
-        #elif (whichString <= cahcah):
-        #    theResult = "up"
-
-        #return theResult
+        return theResult
     
         
     def howManyStrings(): 
@@ -362,12 +359,12 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
           col_indx = col_indx + 1
           row_indx = 0
 
-          if str(col) == 1 and col[0] == "|":
-              measure = ET.SubElement(part, "measure", number=str(m))
-              m += 1
+        #   if str(col) == 1 and col[0] == "|":
+        #       measure = ET.SubElement(part, "measure", number=str(m))
+        #       m += 1
           for row in col: 
             if row in accepted_characters:
-                _noteHead = NoteStruct(str(row))
+                _noteHead = str(row)
                 _colPos = str(col_indx)               
                 _string = str(row_indx + 1)
                 _duration = duration(col_indx)
@@ -379,6 +376,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
                 _octave = octaveCalculator(_instruemntID)
                 _step = stepCalculator(_instruemntID)
                 _stemDirection = stemDirectionDictator(howManyStrings(), row_indx + 1)
+
 
 
 
@@ -398,6 +396,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
             
     
     for i in noteArrayStruct:
+        measure = ET.SubElement(part, "measure", number=1)
         note = ET.SubElement(measure, "note")
         unpitched = ET.SubElement(measure, "upitched")
         display_step = ET.SubElement(unpitched, "display-step").text = str(i.step)

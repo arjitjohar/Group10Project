@@ -123,18 +123,25 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         return None
 
     def instrumentIdentifier(ID1, ID2):
-        if (ID1 + ID2) == "CC":
-            instrumentSet[whichLine] = "P1-I50"
-        elif (ID1 + ID2) == "HH":
-            instrumentSet[whichLine] = "P1-I43"
-        elif (ID1 + ID2) == "SD":
-            instrumentSet[whichLine] = "P1-I39"
-        elif (ID1 + ID2) == "HT":
-            instrumentSet[whichLine] = "P1-I46"
-        elif (ID1 + ID2) == "MT":
-            instrumentSet[whichLine] = "P1-I48"
-        elif (ID1 + ID2) == "BD":
-            instrumentSet[whichLine] = "P1-I36"
+        instrumentPartId = ""
+        if ((ID1 + ID2) == "BD" or (ID1 + ID2) == "KD" or (ID1 + ID2) == "bd" or (ID1 + ID2) == "kd"):
+            instrumentPartId = "P1-I36"
+        elif ((ID1 + ID2) == "SD" or (ID1 + ID2) == "S " or (ID1 + ID2) == "sd" or (ID1 + ID2) == "s "):
+            instrumentPartId = "P1-I39"
+        elif ((ID1 + ID2) == "HH" or (ID1 + ID2) == "hh"):
+            instrumentPartId = "P1-I43"
+        elif ((ID1 + ID2) == "RC" or (ID1 + ID2) == "R " or (ID1 + ID2) == "rc" or (ID1 + ID2) == "r "):
+            instrumentPartId = "P1-I52"
+        elif ((ID1 + ID2) == "CC" or (ID1 + ID2) == "C " or (ID1 + ID2) == "cc" or (ID1 + ID2) == "c "):
+            instrumentPartId = "P1-I50"
+        elif ((ID1 + ID2) == "HT" or (ID1 + ID2) == "H " or (ID1 + ID2) == "ht" or (ID1 + ID2) == "h "):
+            instrumentPartId = "P1-I48"
+        elif ((ID1 + ID2) == "MT" or (ID1 + ID2) == "M " or (ID1 + ID2) == "mt" or (ID1 + ID2) == "m "):
+            instrumentPartId = "P1-I46"
+        elif ((ID1 + ID2) == "FT" or (ID1 + ID2) == "F " or (ID1 + ID2) == "ft" or (ID1 + ID2) == "f "):
+            instrumentPartId = "P1-I42"
+        else:
+            instrumentPartId = "Unrecognized"
 
     def duration(fret):  # find the next occurence of a number
         dur = 0
@@ -202,8 +209,6 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
 
 
 
-    print(howManyCharactersBetween2Pipes())
-
     
     
     def noteTypeCalculator(division, duration):
@@ -224,9 +229,83 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
             answer = "32nd"
         elif nums == 0.015625:
             answer = "64th"
+        else:
+            answer = "quarter"
         return answer
-        
+    
+    def octaveCalculator(partID):
+        theOctave = 0
+        if (partID == "P1-I36"):
+            theOctave = 4
+        elif (partID == "P1-I39"):
+            theOctave = 5
+        elif (partID == "P1-I43"):
+            theOctave = 5
+        elif (partID == "P1-I52"):
+            theOctave = 5
+        elif (partID == "P1-I50"):
+            theOctave = 5
+        elif (partID == "P1-I48"):
+            theOctave = 5
+        elif (partID == "P1-I46"):
+            theOctave = 5
+        elif (partID == "P1-I42"):
+            theOctave = 4
+        else:
+            theOctave = 5
 
+        return theOctave
+
+    def stepCalculator(partID):
+        theOctave = ""
+        if (partID == "P1-I36"):
+            theOctave = "F"
+        elif (partID == "P1-I39"):
+            theOctave = "C"
+        elif (partID == "P1-I43"):
+            theOctave = "G"
+        elif (partID == "P1-I52"):
+            theOctave = "F"
+        elif (partID == "P1-I50"):
+            theOctave = "A"
+        elif (partID == "P1-I48"):
+            theOctave = "E"
+        elif (partID == "P1-I46"):
+            theOctave = "D"
+        elif (partID == "P1-I42"):
+            theOctave = "A"
+        else:
+            theOctave = "F"
+
+        return theOctave
+    
+    def stemDirectionDictator(numberOfStrings, whichString):
+        theResult = ""
+
+
+        if (numberOfStrings == 1):
+            theResult = "up"
+        elif (numberOfStrings == 2 and whichString ==1):
+            theResult = "up"
+        elif (numberOfStrings == 2 and whichString ==2):
+            theResult = "down"
+
+
+
+        #cahcah = int(numberOfStrings/2) + 1
+        #elif (whichString > cahcah):
+        #    theResult = "down"
+        #elif (whichString <= cahcah):
+        #    theResult = "up"
+
+        #return theResult
+    
+        
+    def howManyStrings(): 
+        return len(transpose_list[0])
+
+
+    
 
 
         
@@ -262,6 +341,9 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
         whatMeasure: int
         instruemntID: str
         noteType: str
+        octave: int
+        step: str
+        stemDirection: str
         
 
         # stemDirection: int
@@ -274,26 +356,60 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
 
       row_indx = 0; 
       col_indx = 0; 
+      m = 0
       accepted_characters = ["x","o","f", "X", "O"]
       for col in arr: 
           col_indx = col_indx + 1
           row_indx = 0
+
+          if str(col) == 1 and col[0] == "|":
+              measure = ET.SubElement(part, "measure", number=str(m))
+              m += 1
           for row in col: 
-            if row in accepted_characters: 
+            if row in accepted_characters:
+                _noteHead = NoteStruct(str(row))
+                _colPos = str(col_indx)               
+                _string = str(row_indx + 1)
+                _duration = duration(col_indx)
+                #_isFlam = MANUALLY SET FOR EACH
+                #_ifChord = MANUALLY SET FOR EACH
+                _whatMeasure = measureNum(col_indx - 1, row_indx)
+                _instruemntID = instrumentIdentifier(transpose_list[0][0], transpose_list[1][0])
+                _noteType = noteTypeCalculator(((howManyCharactersBetween2Pipes())/(int(timeSig[0][0]))), _duration)
+                _octave = octaveCalculator(_instruemntID)
+                _step = stepCalculator(_instruemntID)
+                _stemDirection = stemDirectionDictator(howManyStrings(), row_indx + 1)
+
+
+
 
                 
+               
                 if (str(row) == "f"): # will tests if we find a flam
-                    noteArrayStruct.append(NoteStruct(str(row), str(col_indx), str(row_indx + 1), duration(col_indx), True, False, measureNum(col_indx - 1, row_indx), "","", noteTypeCalculator(print(howManyCharactersBetween2Pipes()/int(timeSig[0][0])), duration(col_indx))))
-                    noteArrayStruct.append(NoteStruct(str(row), str(col_indx), str(row_indx + 1), duration(col_indx), True, True, measureNum(col_indx - 1, row_indx), "","", noteTypeCalculator(print(howManyCharactersBetween2Pipes()/int(timeSig[0][0])), duration(col_indx))))
-                    print(noteArrayStruct)
-                else: 
-                    print(col_indx)
-                    noteArrayStruct.append(NoteStruct(str(row), str(col_indx), str(row_indx + 1), duration(col_indx), False, isChord(col_indx - 1, row_indx), measureNum(col_indx - 1, row_indx), "","", noteTypeCalculator(print(howManyCharactersBetween2Pipes()/int(timeSig[0][0])), duration(col_indx))))
-                    print(noteArrayStruct)
+                    noteArrayStruct.append(NoteStruct(_noteHead, _colPos, _string, _duration, True, False, _whatMeasure, _instruemntID, _noteType, _octave, _step, _stemDirection))
+                    noteArrayStruct.append(NoteStruct(_noteHead, _colPos, _string, _duration, True, True, _whatMeasure, _instruemntID, _noteType, _octave, _step, _stemDirection))
+                   
+                else:                    
+                    noteArrayStruct.append(NoteStruct(_noteHead, _colPos, _string, _duration, False, isChord(col_indx - 1, row_indx), _whatMeasure, _instruemntID, _noteType, _octave, _step, _stemDirection))
+
+                
+                    
             row_indx = row_indx + 1
             
-              
-
+    
+    for i in noteArrayStruct:
+        note = ET.SubElement(measure, "note")
+        unpitched = ET.SubElement(measure, "upitched")
+        display_step = ET.SubElement(unpitched, "display-step").text = str(i.step)
+        display_octave = ET.SubElement(unpitched, "display-octave").text = str(i.octave)
+        duration_tag = ET.SubElement(note, "duration").text = str(i.duration)
+        instrument_tag = ET.SubElement(note, "intrument", id= str(i.instruemntID))
+        voice_tag = ET.SubElement(note, "voice").text = "1"
+        type_tag = ET.SubElement(note, "type").text = str(i.noteType)
+        stem_tag = ET.SubElement(note, "steam").text = str(i.stemDirection)
+        notehead_tag = ET.SubElement(note, "notehead").text = str(i.noteHead)
+        #beam_tag = ET.SubElement(note, "beam")
+        
 
 
 

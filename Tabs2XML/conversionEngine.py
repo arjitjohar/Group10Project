@@ -537,7 +537,7 @@ def xmlConverter(someFile, nameFile, piece_name, timeSig):
 
 
                 string = ET.SubElement(technical, "string").text = str(int(noteObject.string) + 1)
-                print(noteObject.fret, 'fret is this one')
+                # print(noteObject.fret, 'fret is this one')
                 fret = ET.SubElement(technical, "fret").text = str(noteObject.fret)
 
                 if noteObject.slurAmount == 1 and (noteObject.hstart or noteObject.pstart):

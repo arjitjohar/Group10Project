@@ -75,22 +75,22 @@ def isUnrecognizedCharacter(tab):
     problem = False
     character = ""
     ind = 0; 
+    errorLoc = 0
     for t in tab:
         
         
         row = row + 1 
+        ind += 1 
         
         for x in t:  
-            if x != "|" and x != "-" and x != "h" and x != "p" and x != "b" and x != "r" and x != "/" and x != "\\" and x != "v" and x != "t" and x != "s" and x != "S" and x != "*" and x != "[" and x != "]" and x != "n" and x != "(" and x != ")" and x != "T" and x != "P" and x != "M" and x != "=" and x != "<" and x != ">" and x != "x" and x != "o" and x != "·" and x != "0" and x != "1" and x != "2" and x != "3" and x != "4" and x != "5" and x != "6" and x != "7" and x != "8" and x != "9" and x!="e" and x!="B" and x!="G" and x!="D" and x!="A" and x!="E":
+            if x!="f" and x!="S" and x!="C" and x!="H" and x!= "|" and x != "-" and x != "h" and x != "p" and x != "b" and x != "r" and x != "/" and x != "\\" and x != "v" and x != "t" and x != "s" and x != "S" and x != "*" and x != "[" and x != "]" and x != "n" and x != "(" and x != ")" and x != "T" and x != "P" and x != "M" and x != "=" and x != "<" and x != ">" and x != "x" and x != "o" and x != "·" and x != "0" and x != "1" and x != "2" and x != "3" and x != "4" and x != "5" and x != "6" and x != "7" and x != "8" and x != "9" and x!="e" and x!="B" and x!="G" and x!="D" and x!="A" and x!="E":
                 problem = True; 
-                
                 character = x
-                ind = t.index(x)
-                break
+                errorLoc = ind
 
             col = col + 1
     if problem: 
-        return ind
+        return (character , errorLoc)
     else: 
         return problem
 
@@ -203,6 +203,7 @@ while True:
         except:
             pass
     elif event == "convert" :
+        
 
             save_path = values["-saveLocation-"]
             file_name = values["-pieceName-"]
@@ -232,6 +233,7 @@ while True:
                 textarr = []
                 for t in txt:
                     textarr.append(list(t))
+            print(txt)
 
                 
             if isAllStringsSameLength(txt) == False: 
@@ -240,8 +242,13 @@ while True:
                 window["-error-"].update("the Ascii Tab is empty")
 
             elif isUnrecognizedCharacter(txt):
-                window["-error-"].update("theres unregognized characters")
+                (lineError, errorCharacter) = isUnrecognizedCharacter(txt)
+                window["-error-"].update("theres unregognized character "+ str(errorCharacter) +" at line " + str(lineError))
+
+                print(isUnrecognizedCharacter(txt))
             else:
+
+
 
                 #try:
                     window["-userTodo-"].update("auto-detected type of music tab:  ")

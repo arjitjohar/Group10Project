@@ -124,7 +124,7 @@ file_list_column = [
         
     ],
     [
-        sg.Text("select the Instrument for conversion"),
+        sg.Text("Select the instrument for conversion"),
         sg.Listbox(varINS, default_values = varTimeSig[1], size=(11,4), key='-LISTOFINS-'),
         
         

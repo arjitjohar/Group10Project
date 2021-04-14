@@ -288,3 +288,5 @@ directory of the file selected when using the “Browse”button (see above).
 The red text displayed on the top-right of the UI explains to the user what the next step of the
 conversion process is. For example, until a Tablaturefile is chosen from the list of files (see
 above), this text will read: “Todo: Choose a tablaturefrom the list on the left.”
+
+
